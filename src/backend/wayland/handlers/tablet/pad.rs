@@ -33,14 +33,20 @@ impl Dispatch<ZwpTabletPadV2, ()> for WaylandState {
                 debug!("Tablet pad description complete");
             }
             Event::Button {
-                time,
                 button,
-                state,
+                state: button_state,
+                ..
             } => {
-                debug!(
-                    "Tablet pad button event: index {} -> {:?} @ {}",
-                    button, state, time
-                );
+                use wayland_protocols::wp::tablet::zv2::client::zwp_tablet_pad_v2::ButtonState;
+                if matches!(button_state, wayland_client::WEnum::Value(ButtonState::Pressed)) {
+                    if let Some(&action) = state.pad_button_bindings.get(&button) {
+                        info!("Pad button {} -> {:?}", button, action);
+                        state.input_state.handle_action(action);
+                        state.input_state.needs_redraw = true;
+                    } else {
+                        debug!("Unbound pad button {}", button);
+                    }
+                }
             }
             Event::Enter {
                 serial,

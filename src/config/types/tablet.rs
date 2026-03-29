@@ -1,6 +1,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use crate::config::keybindings::Action;
 use crate::input::state::{PressureThicknessEditMode, PressureThicknessEntryMode};
 
 /// Tablet/stylus input configuration.
@@ -41,6 +42,46 @@ pub struct TabletInputConfig {
     /// Per-step scale factor when using pressure thickness scale mode.
     #[serde(default = "default_pressure_thickness_scale_step")]
     pub pressure_thickness_scale_step: f64,
+
+    /// Action for lower pen barrel button (BTN_STYLUS).
+    #[serde(default)]
+    pub pen_button_1: Option<Action>,
+
+    /// Action for upper pen barrel button (BTN_STYLUS2).
+    #[serde(default)]
+    pub pen_button_2: Option<Action>,
+
+    /// Action for pad express key 0.
+    #[serde(default)]
+    pub pad_button_0: Option<Action>,
+
+    /// Action for pad express key 1.
+    #[serde(default)]
+    pub pad_button_1: Option<Action>,
+
+    /// Action for pad express key 2.
+    #[serde(default)]
+    pub pad_button_2: Option<Action>,
+
+    /// Action for pad express key 3.
+    #[serde(default)]
+    pub pad_button_3: Option<Action>,
+
+    /// Action for pad express key 4.
+    #[serde(default)]
+    pub pad_button_4: Option<Action>,
+
+    /// Action for pad express key 5.
+    #[serde(default)]
+    pub pad_button_5: Option<Action>,
+
+    /// Action for pad express key 6.
+    #[serde(default)]
+    pub pad_button_6: Option<Action>,
+
+    /// Action for pad express key 7.
+    #[serde(default)]
+    pub pad_button_7: Option<Action>,
 }
 
 impl Default for TabletInputConfig {
@@ -55,6 +96,16 @@ impl Default for TabletInputConfig {
             pressure_thickness_edit_mode: PressureThicknessEditMode::Disabled,
             pressure_thickness_entry_mode: PressureThicknessEntryMode::PressureOnly,
             pressure_thickness_scale_step: 0.1,
+            pen_button_1: None,
+            pen_button_2: None,
+            pad_button_0: None,
+            pad_button_1: None,
+            pad_button_2: None,
+            pad_button_3: None,
+            pad_button_4: None,
+            pad_button_5: None,
+            pad_button_6: None,
+            pad_button_7: None,
         }
     }
 }

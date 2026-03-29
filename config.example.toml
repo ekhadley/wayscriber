@@ -851,6 +851,16 @@ pressure_thickness_entry_mode = "pressure_only"
 # Per-step scale factor when using scale mode (0.1 = +/-10%)
 pressure_thickness_scale_step = 0.1
 
+# Pen barrel button bindings (action names from [keybindings])
+# pen_button_1 = "toggle_radial_menu"   # lower barrel button (BTN_STYLUS)
+# pen_button_2 = "undo"                 # upper barrel button (BTN_STYLUS2)
+
+# Pad express key bindings (by 0-based index)
+# pad_button_0 = "select_pen_tool"
+# pad_button_1 = "select_eraser_tool"
+# pad_button_2 = "undo"
+# pad_button_3 = "redo"
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # CAPTURE SETTINGS
 # ═══════════════════════════════════════════════════════════════════════════════

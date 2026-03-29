@@ -44,6 +44,39 @@ impl WaylandState {
             }
         };
 
+        #[cfg(tablet)]
+        let pen_button_bindings = {
+            let mut m = std::collections::HashMap::new();
+            if let Some(action) = config.tablet.pen_button_1 {
+                m.insert(0x14b_u32, action); // BTN_STYLUS
+            }
+            if let Some(action) = config.tablet.pen_button_2 {
+                m.insert(0x14c_u32, action); // BTN_STYLUS2
+            }
+            m
+        };
+
+        #[cfg(tablet)]
+        let pad_button_bindings = {
+            let mut m = std::collections::HashMap::new();
+            let entries: &[Option<crate::config::Action>] = &[
+                config.tablet.pad_button_0,
+                config.tablet.pad_button_1,
+                config.tablet.pad_button_2,
+                config.tablet.pad_button_3,
+                config.tablet.pad_button_4,
+                config.tablet.pad_button_5,
+                config.tablet.pad_button_6,
+                config.tablet.pad_button_7,
+            ];
+            for (i, slot) in entries.iter().enumerate() {
+                if let Some(action) = slot {
+                    m.insert(i as u32, *action);
+                }
+            }
+            m
+        };
+
         let mut data = StateData::new();
         data.frozen_enabled = frozen_enabled;
         data.pending_freeze_on_start = pending_freeze_on_start;
@@ -156,6 +189,10 @@ impl WaylandState {
             stylus_auto_switched_to_eraser: false,
             #[cfg(tablet)]
             stylus_pre_eraser_tool_override: None,
+            #[cfg(tablet)]
+            pen_button_bindings,
+            #[cfg(tablet)]
+            pad_button_bindings,
             session: SessionState::new(session_options),
             tokio_handle,
         }

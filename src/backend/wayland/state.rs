@@ -228,6 +228,12 @@ pub(super) struct WaylandState {
     /// Tool override that was active before auto-switching to eraser
     #[cfg(tablet)]
     pub(super) stylus_pre_eraser_tool_override: Option<crate::input::Tool>,
+    /// Pen barrel button bindings (evdev button code → action)
+    #[cfg(tablet)]
+    pub(super) pen_button_bindings: std::collections::HashMap<u32, crate::config::Action>,
+    /// Pad express key bindings (button index → action)
+    #[cfg(tablet)]
+    pub(super) pad_button_bindings: std::collections::HashMap<u32, crate::config::Action>,
 
     // Session persistence
     pub(super) session: SessionState,
