@@ -39,7 +39,7 @@ fn acquire_overlay_lock() -> anyhow::Result<Option<File>> {
 }
 
 fn maybe_detach_active(cli: &Cli) -> anyhow::Result<bool> {
-    if !(cli.active || cli.freeze) {
+    if !(cli.active || cli.freeze || cli.windowed) {
         return Ok(false);
     }
     if env_flag_enabled("WAYSCRIBER_NO_DETACH") || std::env::var_os("WAYSCRIBER_DETACHED").is_some()
@@ -111,7 +111,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     }
 
     // Check for Wayland environment
-    if std::env::var("WAYLAND_DISPLAY").is_err() && (cli.daemon || cli.active) {
+    if std::env::var("WAYLAND_DISPLAY").is_err() && (cli.daemon || cli.active || cli.windowed) {
         log::error!("WAYLAND_DISPLAY not set - this application requires Wayland.");
         log::error!("Please run on a Wayland compositor (Hyprland, Sway, etc.).");
         return Err(anyhow::anyhow!("Wayland environment required"));
@@ -127,15 +127,18 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         let mut daemon = crate::daemon::Daemon::new(cli.mode, !tray_disabled, session_override);
         daemon.set_freeze_on_show(cli.freeze_on_show);
         daemon.run()?;
-    } else if cli.active || cli.freeze {
+    } else if cli.active || cli.freeze || cli.windowed {
         if maybe_detach_active(&cli)? {
             return Ok(());
         }
-        let _overlay_lock = match acquire_overlay_lock()? {
-            Some(lock) => lock,
-            None => return Ok(()),
+        let _overlay_lock = if cli.windowed {
+            None
+        } else {
+            match acquire_overlay_lock()? {
+                Some(lock) => Some(lock),
+                None => return Ok(()),
+            }
         };
-        // One-shot mode: show overlay immediately and exit when done
         log_overlay_controls(cli.freeze);
 
         set_runtime_session_override(session_override);
@@ -148,8 +151,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
             ExitAfterCaptureMode::Auto
         };
 
-        // Run Wayland backend
-        crate::backend::run_wayland(cli.mode, cli.freeze, exit_after_capture_mode)?;
+        crate::backend::run_wayland(cli.mode, cli.freeze, cli.windowed, exit_after_capture_mode)?;
 
         log::info!("Annotation overlay closed.");
     } else {

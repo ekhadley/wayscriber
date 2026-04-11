@@ -16,6 +16,7 @@ impl WaylandState {
             preferred_output_identity,
             main_surface_uses_overlay_layer,
             pending_freeze_on_start,
+            presentation_mode,
             screencopy_manager,
             #[cfg(tablet)]
             tablet_manager,
@@ -86,9 +87,12 @@ impl WaylandState {
         data.startup_activation_token = startup_activation_token;
         data.preferred_output_identity = preferred_output_identity;
         data.main_surface_uses_overlay_layer = main_surface_uses_overlay_layer;
+        data.presentation_mode = presentation_mode;
         let force_inline_toolbars = force_inline_toolbars_requested(&config);
-        data.inline_toolbars =
-            layer_shell.is_none() || force_inline_toolbars || main_surface_uses_overlay_layer;
+        data.inline_toolbars = presentation_mode.is_windowed()
+            || layer_shell.is_none()
+            || force_inline_toolbars
+            || main_surface_uses_overlay_layer;
         if force_inline_toolbars {
             info!(
                 "Forcing inline toolbars (config/ui.toolbar.force_inline or WAYSCRIBER_FORCE_INLINE_TOOLBARS)"

@@ -1,4 +1,3 @@
-use crate::notification;
 use log::{info, warn};
 use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
@@ -116,43 +115,8 @@ pub(super) fn run_event_loop(
 
         // Check immediately after dispatch returns.
         if state.input_state.should_exit {
-            let explicit_xdg_close_requested = state.take_xdg_explicit_close_requested();
-            if should_defer_xdg_unfocused_exit(
-                state.surface.is_xdg_window(),
-                !state.xdg_focus_loss_exits_overlay(),
-                state.has_keyboard_focus(),
-                explicit_xdg_close_requested,
-            ) {
-                warn!("Exit requested while unfocused in xdg stay mode; keeping overlay open");
-                state.input_state.should_exit = false;
-            } else {
-                info!("Exit requested after dispatch, breaking event loop");
-                break;
-            }
-        }
-        if state.surface.is_xdg_window()
-            && !state.has_keyboard_focus()
-            && state.focus_exit_suppression_expired(Instant::now())
-        {
-            if state.xdg_focus_loss_exits_overlay() {
-                warn!("Keyboard focus not restored after clipboard action; exiting overlay");
-                state.clear_focus_exit_suppression();
-                notification::send_notification_async(
-                    &state.tokio_handle,
-                    "Wayscriber lost focus".to_string(),
-                    "GNOME could not keep the overlay focused; closing fallback window."
-                        .to_string(),
-                    Some("dialog-warning".to_string()),
-                );
-                state.input_state.should_exit = true;
-            } else {
-                warn!(
-                    "Keyboard focus not restored after clipboard action; keeping overlay open (ui.xdg_focus_loss_behavior=stay)"
-                );
-                state.clear_focus_exit_suppression();
-                state.set_xdg_close_guard_for(Duration::from_millis(2500));
-                state.request_xdg_activation(qh);
-            }
+            info!("Exit requested after dispatch, breaking event loop");
+            break;
         }
         // Adjust keyboard interactivity if toolbar visibility changed.
         state.sync_toolbar_visibility(qh);
@@ -200,27 +164,4 @@ pub(super) fn run_event_loop(
     }
 
     EventLoopOutcome { loop_error }
-}
-
-fn should_defer_xdg_unfocused_exit(
-    is_xdg_window: bool,
-    stay_mode: bool,
-    has_keyboard_focus: bool,
-    explicit_xdg_close_requested: bool,
-) -> bool {
-    is_xdg_window && stay_mode && !has_keyboard_focus && !explicit_xdg_close_requested
-}
-
-#[cfg(test)]
-mod tests {
-    use super::should_defer_xdg_unfocused_exit;
-
-    #[test]
-    fn defers_exit_only_for_unfocused_xdg_stay_without_explicit_close() {
-        assert!(should_defer_xdg_unfocused_exit(true, true, false, false));
-        assert!(!should_defer_xdg_unfocused_exit(true, true, true, false));
-        assert!(!should_defer_xdg_unfocused_exit(true, false, false, false));
-        assert!(!should_defer_xdg_unfocused_exit(false, true, false, false));
-        assert!(!should_defer_xdg_unfocused_exit(true, true, false, true));
-    }
 }

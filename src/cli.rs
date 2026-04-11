@@ -31,6 +31,22 @@ pub struct Cli {
     #[arg(long, short = 'a', action = ArgAction::SetTrue)]
     pub active: bool,
 
+    /// Open as a regular xdg-toplevel window instead of a fullscreen overlay
+    #[arg(
+        long,
+        short = 'w',
+        action = ArgAction::SetTrue,
+        conflicts_with_all = [
+            "daemon",
+            "daemon_toggle",
+            "freeze",
+            "freeze_on_show",
+            "exit_after_capture",
+            "no_exit_after_capture",
+        ]
+    )]
+    pub windowed: bool,
+
     /// Initial board id (transparent, whiteboard, blackboard, or a custom id)
     #[arg(long, short = 'm', value_name = "MODE")]
     pub mode: Option<String>,

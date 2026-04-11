@@ -124,6 +124,7 @@ pub(in crate::backend::wayland) struct WaylandStateInit {
     pub preferred_output_identity: Option<String>,
     pub main_surface_uses_overlay_layer: bool,
     pub pending_freeze_on_start: bool,
+    pub presentation_mode: super::presentation::PresentationMode,
     pub screencopy_manager: Option<ScreencopyManager>,
     #[cfg(tablet)]
     pub tablet_manager: Option<ZwpTabletManagerV2>,

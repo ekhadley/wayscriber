@@ -89,8 +89,10 @@ impl InputState {
             self.color_picker_popup_layout = None;
             return;
         }
-        self.color_picker_popup_layout =
-            Some(ColorPickerPopupLayout::compute(surface_width, surface_height));
+        self.color_picker_popup_layout = Some(ColorPickerPopupLayout::compute(
+            surface_width,
+            surface_height,
+        ));
     }
 
     /// Clears the cached color picker popup layout.

@@ -55,7 +55,13 @@ impl ZoomState {
         self.panning = false;
     }
 
-    pub fn pan_by_screen_delta(&mut self, dx: f64, dy: f64, surface_width: u32, surface_height: u32) {
+    pub fn pan_by_screen_delta(
+        &mut self,
+        dx: f64,
+        dy: f64,
+        surface_width: u32,
+        surface_height: u32,
+    ) {
         if self.scale <= MIN_ZOOM_SCALE {
             return;
         }

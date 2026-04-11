@@ -29,6 +29,7 @@ pub use action_meta::{
     action_meta, action_meta_iter, action_short_label,
 };
 pub use core::Config;
+#[allow(unused_imports)]
 pub use enums::{RadialMenuMouseBinding, StatusPosition, XdgFocusLossBehavior};
 #[allow(unused_imports)]
 pub use io::{ConfigSource, LoadedConfig};

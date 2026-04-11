@@ -31,6 +31,11 @@ impl WaylandState {
 
     /// Applies keyboard interactivity based on toolbar visibility.
     pub(in crate::backend::wayland) fn refresh_keyboard_interactivity(&mut self) {
+        if self.presentation_mode().is_windowed() {
+            // xdg-toplevel surfaces have no keyboard-interactivity knob.
+            return;
+        }
+
         let desired = self.desired_keyboard_interactivity();
         let current = self.current_keyboard_interactivity();
 
@@ -106,7 +111,7 @@ impl WaylandState {
         }
 
         // Warn the user when layer-shell is unavailable and we're forced to inline fallback.
-        if any_visible && self.layer_shell.is_none() {
+        if any_visible && self.layer_shell.is_none() && self.presentation_mode().is_overlay() {
             self.log_toolbar_layer_shell_missing_once();
         }
 

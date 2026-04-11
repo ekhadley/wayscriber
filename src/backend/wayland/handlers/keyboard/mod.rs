@@ -1,15 +1,14 @@
 // Bridges Wayland key events into our `InputState`, including capture-action plumbing.
 mod translate;
 
-use log::{debug, warn};
+use log::debug;
 use smithay_client_toolkit::seat::keyboard::{KeyEvent, KeyboardHandler, Modifiers, RawModifiers};
-use std::time::Duration;
 use wayland_client::{
     Connection, QueueHandle,
     protocol::{wl_keyboard, wl_surface},
 };
 
-use crate::{input::Key, notification};
+use crate::input::Key;
 
 use super::super::state::WaylandState;
 use translate::keysym_to_key;
@@ -28,7 +27,6 @@ impl KeyboardHandler for WaylandState {
         debug!("Keyboard focus entered");
         self.set_keyboard_focus(true);
         self.clear_focus_exit_suppression();
-        self.clear_xdg_close_guard();
         self.set_last_activation_serial(Some(serial));
         self.maybe_retry_activation(qh);
         if let Some(target) = self.toolbar.focus_target_for_surface(surface) {
@@ -46,7 +44,7 @@ impl KeyboardHandler for WaylandState {
     fn leave(
         &mut self,
         _conn: &Connection,
-        qh: &QueueHandle<Self>,
+        _qh: &QueueHandle<Self>,
         _keyboard: &wl_keyboard::WlKeyboard,
         _surface: &wl_surface::WlSurface,
         _serial: u32,
@@ -62,31 +60,6 @@ impl KeyboardHandler for WaylandState {
         // and breaking shortcuts/tools, aggressively reset our modifier state on
         // focus loss.
         self.input_state.reset_modifiers();
-
-        if self.surface.is_xdg_window() && self.focus_exit_suppressed() {
-            warn!("Keyboard focus lost in xdg fallback; suppressing exit after clipboard action");
-            self.set_xdg_close_guard_for(Duration::from_millis(2500));
-            self.request_xdg_activation(qh);
-            return;
-        }
-
-        if self.surface.is_xdg_window() {
-            if !self.xdg_focus_loss_exits_overlay() {
-                warn!(
-                    "Keyboard focus lost in xdg fallback; keeping overlay open without auto-reactivation (ui.xdg_focus_loss_behavior=stay)"
-                );
-                self.set_xdg_close_guard_for(Duration::from_millis(2500));
-                return;
-            }
-            warn!("Keyboard focus lost in xdg fallback; exiting overlay");
-            notification::send_notification_async(
-                &self.tokio_handle,
-                "Wayscriber lost focus".to_string(),
-                "GNOME could not keep the overlay focused; closing fallback window.".to_string(),
-                Some("dialog-warning".to_string()),
-            );
-            self.input_state.should_exit = true;
-        }
     }
 
     fn press_key(

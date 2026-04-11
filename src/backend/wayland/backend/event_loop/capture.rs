@@ -48,8 +48,17 @@ fn handle_frozen_toggle(state: &mut WaylandState) {
         return;
     }
 
+    if !state.presentation_mode().allows_freeze() {
+        state.input_state.set_ui_toast(
+            crate::input::state::UiToastKind::Info,
+            "Freeze mode is disabled in windowed mode",
+        );
+        state.input_state.trigger_blocked_feedback();
+        return;
+    }
+
     if !state.frozen_enabled() {
-        warn!("Frozen mode disabled on this compositor (xdg fallback); ignoring toggle");
+        warn!("Frozen mode disabled on this compositor; ignoring toggle");
     } else if state.frozen.is_in_progress() {
         warn!("Frozen capture already in progress; ignoring toggle");
     } else if state.input_state.frozen_active() {

@@ -3,6 +3,7 @@
 use anyhow::{Context, Result};
 
 use crate::backend::ExitAfterCaptureMode;
+use crate::backend::wayland::PresentationMode;
 
 mod event_loop;
 mod helpers;
@@ -16,6 +17,7 @@ mod tray;
 pub struct WaylandBackend {
     pub(super) initial_mode: Option<String>,
     pub(super) freeze_on_start: bool,
+    pub(super) presentation_mode: PresentationMode,
     pub(super) exit_after_capture_mode: ExitAfterCaptureMode,
     /// Tokio runtime for async capture operations
     pub(super) tokio_runtime: tokio::runtime::Runtime,
@@ -25,6 +27,7 @@ impl WaylandBackend {
     pub fn new(
         initial_mode: Option<String>,
         freeze_on_start: bool,
+        presentation_mode: PresentationMode,
         exit_after_capture_mode: ExitAfterCaptureMode,
     ) -> Result<Self> {
         let tokio_runtime = tokio::runtime::Runtime::new()
@@ -32,6 +35,7 @@ impl WaylandBackend {
         Ok(Self {
             initial_mode,
             freeze_on_start,
+            presentation_mode,
             exit_after_capture_mode,
             tokio_runtime,
         })

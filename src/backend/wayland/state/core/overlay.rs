@@ -17,6 +17,9 @@ impl WaylandState {
     }
 
     fn apply_overlay_clickthrough(&mut self, clickthrough: bool) {
+        if !self.presentation_mode().allows_passthrough() {
+            return;
+        }
         if let Some(wl_surface) = self.surface.wl_surface().cloned() {
             set_surface_clickthrough(&self.compositor_state, &wl_surface, clickthrough);
         }

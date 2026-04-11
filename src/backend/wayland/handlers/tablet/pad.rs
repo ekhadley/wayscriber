@@ -38,7 +38,10 @@ impl Dispatch<ZwpTabletPadV2, ()> for WaylandState {
                 ..
             } => {
                 use wayland_protocols::wp::tablet::zv2::client::zwp_tablet_pad_v2::ButtonState;
-                if matches!(button_state, wayland_client::WEnum::Value(ButtonState::Pressed)) {
+                if matches!(
+                    button_state,
+                    wayland_client::WEnum::Value(ButtonState::Pressed)
+                ) {
                     if let Some(&action) = state.pad_button_bindings.get(&button) {
                         info!("Pad button {} -> {:?}", button, action);
                         state.input_state.handle_action(action);

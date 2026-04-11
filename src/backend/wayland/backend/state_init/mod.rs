@@ -107,6 +107,7 @@ pub(super) fn init_state(backend: &WaylandBackend, setup: WaylandSetup) -> Resul
         preferred_output_identity: output_prefs.preferred_output_identity,
         main_surface_uses_overlay_layer: output_prefs.main_surface_uses_overlay_layer,
         pending_freeze_on_start: freeze_on_start,
+        presentation_mode: backend.presentation_mode,
         screencopy_manager: setup.screencopy_manager,
         #[cfg(tablet)]
         tablet_manager,

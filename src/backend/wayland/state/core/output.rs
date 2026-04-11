@@ -11,9 +11,7 @@ use crate::{
 const OUTPUT_BADGE_MAX_LEN: usize = 28;
 
 impl WaylandState {
-    pub(in crate::backend::wayland) fn preferred_output(
-        &self,
-    ) -> Option<wl_output::WlOutput> {
+    pub(in crate::backend::wayland) fn preferred_output(&self) -> Option<wl_output::WlOutput> {
         if let Some(preferred) = self.preferred_output_identity()
             && let Some(output) = self.output_state.outputs().find(|output| {
                 self.output_identity_for(output)
@@ -173,6 +171,10 @@ impl WaylandState {
         qh: &QueueHandle<Self>,
         action: OutputFocusAction,
     ) {
+        if !self.presentation_mode().allows_output_switching() {
+            log::debug!("Output switching ignored in windowed mode");
+            return;
+        }
         if !self.config.ui.multi_monitor_enabled {
             self.input_state.set_ui_toast(
                 UiToastKind::Info,

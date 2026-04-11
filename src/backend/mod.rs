@@ -13,20 +13,25 @@ pub enum ExitAfterCaptureMode {
 }
 
 /// Run Wayland backend with full event loop
-///
-/// # Arguments
-/// * `initial_mode` - Optional board mode to start in (overrides config default)
-/// * `freeze_on_start` - Whether to start with the overlay frozen for immediate capture pause
-/// * `exit_after_capture_mode` - Exit behavior after a capture completes
 pub fn run_wayland(
     initial_mode: Option<String>,
     freeze_on_start: bool,
+    windowed: bool,
     exit_after_capture_mode: ExitAfterCaptureMode,
 ) -> Result<()> {
-    let mut backend =
-        wayland::WaylandBackend::new(initial_mode, freeze_on_start, exit_after_capture_mode)?;
+    let presentation_mode = if windowed {
+        wayland::PresentationMode::Windowed
+    } else {
+        wayland::PresentationMode::Overlay
+    };
+    let mut backend = wayland::WaylandBackend::new(
+        initial_mode,
+        freeze_on_start,
+        presentation_mode,
+        exit_after_capture_mode,
+    )?;
     backend.init()?;
-    backend.show()?; // show() calls run() internally
+    backend.show()?;
     backend.hide()?;
     Ok(())
 }
@@ -40,7 +45,7 @@ mod tests {
             eprintln!("WAYLAND_DISPLAY not set; skipping Wayland smoke test");
             return;
         }
-        super::run_wayland(None, false, super::ExitAfterCaptureMode::Never)
+        super::run_wayland(None, false, false, super::ExitAfterCaptureMode::Never)
             .expect("Wayland backend should start");
     }
 }

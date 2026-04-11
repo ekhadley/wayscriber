@@ -81,10 +81,12 @@ impl WaylandState {
             let (mx, my) = self.current_mouse();
             let surface_width = self.surface.width();
             let surface_height = self.surface.height();
-            if let Some(hint) =
-                self.input_state
-                    .command_palette_cursor_hint_at(mx, my, surface_width, surface_height)
-            {
+            if let Some(hint) = self.input_state.command_palette_cursor_hint_at(
+                mx,
+                my,
+                surface_width,
+                surface_height,
+            ) {
                 return match hint {
                     CommandPaletteCursorHint::Text => CursorIcon::Text,
                     CommandPaletteCursorHint::Pointer => CursorIcon::Pointer,

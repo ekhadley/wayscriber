@@ -30,6 +30,15 @@ impl WaylandState {
 
     /// Handles capture actions by delegating to the CaptureManager.
     pub(in crate::backend::wayland) fn handle_capture_action(&mut self, action: Action) {
+        if !self.presentation_mode().allows_capture() {
+            self.input_state.set_ui_toast(
+                crate::input::state::UiToastKind::Info,
+                "Screen capture is disabled in windowed mode",
+            );
+            self.input_state.trigger_blocked_feedback();
+            return;
+        }
+
         if !self.config.capture.enabled {
             log::warn!("Capture action triggered but capture is disabled in config");
             return;

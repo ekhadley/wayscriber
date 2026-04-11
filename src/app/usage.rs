@@ -178,6 +178,9 @@ pub(crate) fn print_usage() {
         "             [--exit-after-capture|--no-exit-after-capture] [--resume-session|--no-resume-session]"
     );
     println!("  wayscriber -a, --active      Show overlay immediately (one-shot mode)");
+    println!(
+        "  wayscriber -w, --windowed    Open as a regular xdg-toplevel window (note-taking mode)"
+    );
     println!("  wayscriber --freeze          Start overlay already frozen");
     println!(
         "  wayscriber --exit-after-capture  Exit overlay after a capture completes (override auto clipboard exit)"

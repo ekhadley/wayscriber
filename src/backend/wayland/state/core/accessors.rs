@@ -76,50 +76,14 @@ impl WaylandState {
         self.data.suppress_focus_exit_until = Some(Instant::now() + duration);
     }
 
-    pub(in crate::backend::wayland) fn focus_exit_suppressed(&self) -> bool {
-        self.data
-            .suppress_focus_exit_until
-            .is_some_and(|until| Instant::now() <= until)
-    }
-
     pub(in crate::backend::wayland) fn focus_exit_timeout(&self, now: Instant) -> Option<Duration> {
         self.data
             .suppress_focus_exit_until
             .and_then(|until| (until > now).then(|| until.saturating_duration_since(now)))
     }
 
-    pub(in crate::backend::wayland) fn focus_exit_suppression_expired(&self, now: Instant) -> bool {
-        self.data
-            .suppress_focus_exit_until
-            .is_some_and(|until| now >= until)
-    }
-
     pub(in crate::backend::wayland) fn clear_focus_exit_suppression(&mut self) {
         self.data.suppress_focus_exit_until = None;
-    }
-
-    pub(in crate::backend::wayland) fn set_xdg_close_guard_for(&mut self, duration: Duration) {
-        self.data.xdg_close_guard_until = Some(Instant::now() + duration);
-    }
-
-    pub(in crate::backend::wayland) fn clear_xdg_close_guard(&mut self) {
-        self.data.xdg_close_guard_until = None;
-    }
-
-    pub(in crate::backend::wayland) fn xdg_close_guard_active(&self, now: Instant) -> bool {
-        self.data
-            .xdg_close_guard_until
-            .is_some_and(|until| now <= until)
-    }
-
-    pub(in crate::backend::wayland) fn mark_xdg_explicit_close_requested(&mut self) {
-        self.data.xdg_explicit_close_requested = true;
-    }
-
-    pub(in crate::backend::wayland) fn take_xdg_explicit_close_requested(&mut self) -> bool {
-        let was_requested = self.data.xdg_explicit_close_requested;
-        self.data.xdg_explicit_close_requested = false;
-        was_requested
     }
 
     pub(in crate::backend::wayland) fn frozen_enabled(&self) -> bool {
@@ -175,19 +139,18 @@ impl WaylandState {
         self.data.preferred_output_identity = value;
     }
 
+    pub(in crate::backend::wayland) fn presentation_mode(
+        &self,
+    ) -> crate::backend::wayland::PresentationMode {
+        self.data.presentation_mode
+    }
+
     pub(in crate::backend::wayland) fn main_surface_layer(&self) -> Layer {
         if self.data.main_surface_uses_overlay_layer {
             Layer::Overlay
         } else {
             Layer::Top
         }
-    }
-
-    pub(in crate::backend::wayland) fn xdg_focus_loss_exits_overlay(&self) -> bool {
-        matches!(
-            self.config.ui.xdg_focus_loss_behavior,
-            crate::config::XdgFocusLossBehavior::Exit
-        )
     }
 
     pub(in crate::backend::wayland) fn session_options(&self) -> Option<&SessionOptions> {

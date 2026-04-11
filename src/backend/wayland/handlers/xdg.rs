@@ -1,27 +1,17 @@
-// Handles xdg-shell window configure/close events.
+// Handles xdg-shell window configure/close events for windowed mode.
 use log::{debug, info, warn};
 use smithay_client_toolkit::shell::xdg::window::{Window, WindowConfigure, WindowHandler};
-use std::time::Instant;
 use wayland_client::{Connection, QueueHandle};
 
 use super::super::state::WaylandState;
 use crate::session;
 
+const WINDOWED_DEFAULT_WIDTH: u32 = 1280;
+const WINDOWED_DEFAULT_HEIGHT: u32 = 800;
+
 impl WindowHandler for WaylandState {
     fn request_close(&mut self, _conn: &Connection, _qh: &QueueHandle<Self>, _window: &Window) {
-        if should_ignore_xdg_close_request(
-            !self.xdg_focus_loss_exits_overlay(),
-            self.has_keyboard_focus(),
-            self.xdg_close_guard_active(Instant::now()),
-        ) {
-            warn!(
-                "xdg window close requested while unfocused in stay mode; keeping overlay open without auto-reactivation"
-            );
-            return;
-        }
-
         info!("xdg window close requested by compositor");
-        self.mark_xdg_explicit_close_requested();
         self.input_state.should_exit = true;
     }
 
@@ -33,39 +23,20 @@ impl WindowHandler for WaylandState {
         configure: WindowConfigure,
         _serial: u32,
     ) {
-        let fallback_dimensions = self
-            .output_state
-            .outputs()
-            .next()
-            .and_then(|output| self.output_state.info(&output))
-            .and_then(|info| {
-                if let Some((w, h)) = info.logical_size {
-                    Some((w.max(1) as u32, h.max(1) as u32))
-                } else {
-                    info.modes
-                        .iter()
-                        .find(|mode| mode.current || mode.preferred)
-                        .or_else(|| info.modes.first())
-                        .map(|mode| {
-                            (
-                                mode.dimensions.0.max(1) as u32,
-                                mode.dimensions.1.max(1) as u32,
-                            )
-                        })
-                }
-            })
-            .unwrap_or_else(|| (self.surface.width().max(1), self.surface.height().max(1)));
-
-        let width = configure
-            .new_size
-            .0
-            .map(|w| w.get())
-            .unwrap_or(fallback_dimensions.0);
-        let height = configure
-            .new_size
-            .1
-            .map(|h| h.get())
-            .unwrap_or(fallback_dimensions.1);
+        let width = configure.new_size.0.map(|w| w.get()).unwrap_or_else(|| {
+            if self.surface.width() > 0 {
+                self.surface.width()
+            } else {
+                WINDOWED_DEFAULT_WIDTH
+            }
+        });
+        let height = configure.new_size.1.map(|h| h.get()).unwrap_or_else(|| {
+            if self.surface.height() > 0 {
+                self.surface.height()
+            } else {
+                WINDOWED_DEFAULT_HEIGHT
+            }
+        });
 
         if self.surface.current_output().is_none()
             && let Some(output) = self.output_state.outputs().next()
@@ -153,26 +124,5 @@ impl WindowHandler for WaylandState {
             }
             self.input_state.needs_redraw = true;
         }
-    }
-}
-
-fn should_ignore_xdg_close_request(
-    stay_mode: bool,
-    has_keyboard_focus: bool,
-    close_guard_active: bool,
-) -> bool {
-    stay_mode && !has_keyboard_focus && close_guard_active
-}
-
-#[cfg(test)]
-mod tests {
-    use super::should_ignore_xdg_close_request;
-
-    #[test]
-    fn ignores_close_only_for_unfocused_stay_with_active_guard() {
-        assert!(should_ignore_xdg_close_request(true, false, true));
-        assert!(!should_ignore_xdg_close_request(true, true, true));
-        assert!(!should_ignore_xdg_close_request(false, false, true));
-        assert!(!should_ignore_xdg_close_request(true, false, false));
     }
 }

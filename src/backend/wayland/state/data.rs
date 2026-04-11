@@ -76,6 +76,7 @@ pub struct StateData {
     pub(super) has_seen_surface_enter: bool,
     pub(super) preferred_output_identity: Option<String>,
     pub(super) main_surface_uses_overlay_layer: bool,
+    pub(super) presentation_mode: super::super::presentation::PresentationMode,
     pub(super) overlay_suppression: OverlaySuppression,
     /// True when surface is configured and has keyboard focus; keys are blocked until ready.
     pub(super) overlay_ready: bool,
@@ -83,11 +84,6 @@ pub struct StateData {
     pub(super) suppress_next_release: bool,
     /// Suppress overlay exit on focus loss for a short window (e.g., clipboard helpers).
     pub(super) suppress_focus_exit_until: Option<Instant>,
-    /// Short guard window after xdg focus loss where compositor close requests are ignored
-    /// in stay mode to avoid spurious GNOME close events.
-    pub(super) xdg_close_guard_until: Option<Instant>,
-    /// Explicit compositor close request received for xdg fallback window.
-    pub(super) xdg_explicit_close_requested: bool,
 }
 
 impl StateData {
@@ -139,12 +135,11 @@ impl StateData {
             has_seen_surface_enter: false,
             preferred_output_identity: None,
             main_surface_uses_overlay_layer: false,
+            presentation_mode: super::super::presentation::PresentationMode::Overlay,
             overlay_suppression: OverlaySuppression::None,
             overlay_ready: false,
             suppress_next_release: false,
             suppress_focus_exit_until: None,
-            xdg_close_guard_until: None,
-            xdg_explicit_close_requested: false,
         }
     }
 }

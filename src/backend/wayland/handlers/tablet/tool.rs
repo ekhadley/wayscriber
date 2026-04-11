@@ -286,9 +286,16 @@ impl Dispatch<ZwpTabletToolV2, ()> for WaylandState {
                 // Note: We don't switch tools here - this event comes during initial
                 // tool setup, before proximity_in. The actual switch happens in proximity_in.
             }
-            Event::Button { button, state: button_state, .. } => {
+            Event::Button {
+                button,
+                state: button_state,
+                ..
+            } => {
                 use wayland_protocols::wp::tablet::zv2::client::zwp_tablet_tool_v2::ButtonState;
-                if matches!(button_state, wayland_client::WEnum::Value(ButtonState::Pressed)) {
+                if matches!(
+                    button_state,
+                    wayland_client::WEnum::Value(ButtonState::Pressed)
+                ) {
                     if let Some(&action) = state.pen_button_bindings.get(&button) {
                         info!("Pen button {} -> {:?}", button, action);
                         state.input_state.handle_action(action);
