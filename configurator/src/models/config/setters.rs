@@ -59,7 +59,6 @@ impl ConfigDraft {
             }
             ToggleField::UiHelpOverlayContextFilter => self.help_context_filter = value,
             ToggleField::UiContextMenuEnabled => self.ui_context_menu_enabled = value,
-            ToggleField::UiXdgFullscreen => self.ui_xdg_fullscreen = value,
             ToggleField::UiXdgKeepOnFocusLoss => self.ui_xdg_keep_on_focus_loss = value,
             ToggleField::UiToolbarTopPinned => self.ui_toolbar_top_pinned = value,
             ToggleField::UiToolbarSidePinned => self.ui_toolbar_side_pinned = value,

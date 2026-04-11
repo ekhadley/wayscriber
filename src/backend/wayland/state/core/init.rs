@@ -14,7 +14,6 @@ impl WaylandState {
             exit_after_capture_mode,
             frozen_enabled,
             preferred_output_identity,
-            xdg_fullscreen,
             main_surface_uses_overlay_layer,
             pending_freeze_on_start,
             screencopy_manager,
@@ -86,7 +85,6 @@ impl WaylandState {
         }
         data.startup_activation_token = startup_activation_token;
         data.preferred_output_identity = preferred_output_identity;
-        data.xdg_fullscreen = xdg_fullscreen;
         data.main_surface_uses_overlay_layer = main_surface_uses_overlay_layer;
         let force_inline_toolbars = force_inline_toolbars_requested(&config);
         data.inline_toolbars =

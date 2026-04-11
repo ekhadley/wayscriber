@@ -92,12 +92,7 @@ pub(super) fn init_state(backend: &WaylandBackend, setup: WaylandSetup) -> Resul
     let tokio_handle = backend.tokio_runtime.handle().clone();
 
     let frozen_supported = setup.layer_shell_available;
-    let freeze_on_start = if backend.freeze_on_start && !frozen_supported {
-        warn!("Frozen mode is not supported on GNOME xdg fallback; ignoring --freeze");
-        false
-    } else {
-        backend.freeze_on_start
-    };
+    let freeze_on_start = backend.freeze_on_start;
 
     let mut state = WaylandState::new(WaylandStateInit {
         globals: setup.state_globals,
@@ -110,7 +105,6 @@ pub(super) fn init_state(backend: &WaylandBackend, setup: WaylandSetup) -> Resul
         exit_after_capture_mode,
         frozen_enabled: frozen_supported,
         preferred_output_identity: output_prefs.preferred_output_identity,
-        xdg_fullscreen: output_prefs.xdg_fullscreen,
         main_surface_uses_overlay_layer: output_prefs.main_surface_uses_overlay_layer,
         pending_freeze_on_start: freeze_on_start,
         screencopy_manager: setup.screencopy_manager,

@@ -8,7 +8,6 @@ pub enum ToggleField {
     UiShowCapabilitiesWarning,
     UiHelpOverlayContextFilter,
     UiContextMenuEnabled,
-    UiXdgFullscreen,
     UiXdgKeepOnFocusLoss,
     UiToolbarTopPinned,
     UiToolbarSidePinned,

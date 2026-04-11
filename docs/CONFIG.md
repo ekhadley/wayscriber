@@ -259,10 +259,7 @@ multi_monitor_enabled = true
 # Show active output label in the status bar
 active_output_badge = true
 
-# Request fullscreen for the GNOME fallback overlay (disable if opaque)
-#xdg_fullscreen = false
-
-# Behavior when GNOME fallback (xdg-shell) loses keyboard focus
+# Behavior when xdg-shell windows lose keyboard focus
 # Options: "exit", "stay" (default on Ubuntu/GNOME)
 #xdg_focus_loss_behavior = "exit"
 
@@ -324,7 +321,7 @@ enabled = true
 - **Highlight tool ring**: `show_on_highlight_tool = true` keeps a persistent halo visible while the highlight tool is active
 - **Context menu**: `ui.context_menu.enabled` toggles right-click / keyboard menus
 - **Output focus**: `multi_monitor_enabled` controls output-cycling shortcuts; `active_output_badge` shows the current monitor in the status bar
-- **GNOME fallback**: `preferred_output` pins the xdg-shell overlay to a specific monitor; `xdg_fullscreen` requests fullscreen instead of maximized; `xdg_focus_loss_behavior` controls whether losing focus closes (`exit`) or keeps (`stay`) the overlay
+- **xdg-shell windows**: `preferred_output` pins the xdg-shell window to a specific monitor; `xdg_focus_loss_behavior` controls whether losing focus closes (`exit`) or keeps (`stay`) the overlay
 - **Radial menu trigger**: `radial_menu_mouse_binding` selects which mouse button opens radial menu (`middle` default, `right`, or `disabled`)
 
 **Multi-monitor behavior:**
@@ -998,9 +995,7 @@ These override behavior at runtime. Bool-ish values treat anything except `0`, `
 - `WAYSCRIBER_DEBUG_TOOLBAR_DRAG=1` enables toolbar drag logging (default: off)
 - `WAYSCRIBER_DEBUG_TOOLBAR_COLOR=1` enables toolbar color picker logging (default: off)
 - `WAYSCRIBER_DEBUG_DAMAGE=1` enables damage region logging (default: off)
-- `WAYSCRIBER_XDG_OUTPUT=...` forces GNOME fallback overlays onto a specific output (overrides `ui.preferred_output`)
-- `WAYSCRIBER_XDG_FULLSCREEN=1` requests fullscreen GNOME fallback overlays (overrides `ui.xdg_fullscreen`)
-- `WAYSCRIBER_XDG_FULLSCREEN_FORCE=1` bypasses the GNOME opacity safety check
+- `WAYSCRIBER_XDG_OUTPUT=...` forces xdg-shell windows onto a specific output (overrides `ui.preferred_output`)
 - `RUST_LOG=info` enables Rust logging (default: unset; use `wayscriber=debug` for app-level logs)
 
 ## Troubleshooting

@@ -76,11 +76,6 @@ pub struct UiConfig {
     #[serde(default = "default_command_palette_toast_duration_ms")]
     pub command_palette_toast_duration_ms: u64,
 
-    /// Use fullscreen for the xdg-shell fallback (GNOME). Disable if fullscreen
-    /// produces an opaque background; maximized is used when false.
-    #[serde(default = "default_xdg_fullscreen")]
-    pub xdg_fullscreen: bool,
-
     /// Behavior when the xdg-shell fallback overlay loses keyboard focus.
     ///
     /// `exit` preserves legacy behavior; `stay` keeps the overlay open.
@@ -121,7 +116,6 @@ impl Default for UiConfig {
             multi_monitor_enabled: default_multi_monitor_enabled(),
             active_output_badge: default_active_output_badge(),
             command_palette_toast_duration_ms: default_command_palette_toast_duration_ms(),
-            xdg_fullscreen: default_xdg_fullscreen(),
             xdg_focus_loss_behavior: default_xdg_focus_loss_behavior(),
             radial_menu_mouse_binding: default_radial_menu_mouse_binding(),
             click_highlight: ClickHighlightConfig::default(),
@@ -148,10 +142,6 @@ fn default_show_page_badge_with_status_bar() -> bool {
 }
 
 fn default_show_frozen_badge() -> bool {
-    false
-}
-
-fn default_xdg_fullscreen() -> bool {
     false
 }
 

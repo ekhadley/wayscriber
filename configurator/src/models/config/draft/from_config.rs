@@ -73,7 +73,6 @@ impl ConfigDraft {
             ui_show_capabilities_warning: config.ui.show_capabilities_warning,
             ui_context_menu_enabled: config.ui.context_menu.enabled,
             ui_preferred_output: config.ui.preferred_output.clone().unwrap_or_default(),
-            ui_xdg_fullscreen: config.ui.xdg_fullscreen,
             ui_xdg_keep_on_focus_loss: matches!(
                 config.ui.xdg_focus_loss_behavior,
                 XdgFocusLossBehavior::Stay

@@ -5,6 +5,7 @@ use crate::app_id::runtime_app_id;
 use super::*;
 
 impl WaylandState {
+    #[allow(dead_code)] // Used by upcoming windowed mode
     pub(in crate::backend::wayland) fn activate_xdg_window_with_startup_token_if_present(
         &mut self,
     ) -> bool {

@@ -18,7 +18,6 @@ impl ConfigDraft {
         } else {
             Some(preferred_output.to_string())
         };
-        config.ui.xdg_fullscreen = self.ui_xdg_fullscreen;
         config.ui.xdg_focus_loss_behavior = if self.ui_xdg_keep_on_focus_loss {
             XdgFocusLossBehavior::Stay
         } else {

@@ -1,10 +1,6 @@
 use anyhow::Result;
 use log::info;
-use smithay_client_toolkit::shell::{
-    WaylandSurface, wlr_layer::Anchor, xdg::window::WindowDecorations,
-};
-
-use crate::app_id::runtime_app_id;
+use smithay_client_toolkit::shell::{WaylandSurface, wlr_layer::Anchor};
 
 use super::super::state::WaylandState;
 
@@ -12,60 +8,31 @@ pub(super) fn create_overlay_surface(
     state: &mut WaylandState,
     qh: &wayland_client::QueueHandle<WaylandState>,
 ) -> Result<()> {
-    // Create surface using layer-shell when available, otherwise fall back to xdg-shell
+    let layer_shell = state
+        .layer_shell
+        .as_ref()
+        .ok_or_else(|| anyhow::anyhow!("wlr-layer-shell protocol unavailable"))?;
     let wl_surface = state.compositor_state.create_surface(qh);
-    if let Some(layer_shell) = state.layer_shell.as_ref() {
-        let layer = state.main_surface_layer();
-        info!("Creating layer shell surface in {:?} layer", layer);
-        let layer_surface = layer_shell.create_layer_surface(
-            qh,
-            wl_surface,
-            layer,
-            Some("wayscriber"),
-            None, // Default output
-        );
+    let layer = state.main_surface_layer();
+    info!("Creating layer shell surface in {:?} layer", layer);
+    let layer_surface = layer_shell.create_layer_surface(
+        qh,
+        wl_surface,
+        layer,
+        Some("wayscriber"),
+        None, // Default output
+    );
 
-        // Configure the layer surface for fullscreen overlay
-        layer_surface.set_anchor(Anchor::all());
-        let desired_keyboard_mode = state.desired_keyboard_interactivity();
-        layer_surface.set_keyboard_interactivity(desired_keyboard_mode);
-        layer_surface.set_size(0, 0); // Use full screen size
-        layer_surface.set_exclusive_zone(-1);
+    layer_surface.set_anchor(Anchor::all());
+    let desired_keyboard_mode = state.desired_keyboard_interactivity();
+    layer_surface.set_keyboard_interactivity(desired_keyboard_mode);
+    layer_surface.set_size(0, 0);
+    layer_surface.set_exclusive_zone(-1);
+    layer_surface.commit();
 
-        // Commit the surface
-        layer_surface.commit();
-
-        state.surface.set_layer_surface(layer_surface);
-        state.set_current_keyboard_interactivity(Some(desired_keyboard_mode));
-        info!("Layer shell surface created");
-    } else if let Some(xdg_shell) = state.xdg_shell.as_ref() {
-        info!("Layer shell missing; creating xdg-shell window");
-        let window = xdg_shell.create_window(wl_surface, WindowDecorations::None, qh);
-        window.set_title("wayscriber overlay");
-        let app_id = runtime_app_id();
-        window.set_app_id(&app_id);
-        if state.xdg_fullscreen() {
-            if let Some(output) = state.preferred_fullscreen_output() {
-                info!("Requesting fullscreen on preferred output");
-                window.set_fullscreen(Some(&output));
-            } else {
-                info!("Preferred output unknown; requesting compositor-chosen fullscreen");
-                window.set_fullscreen(None);
-            }
-        } else {
-            window.set_maximized();
-        }
-        window.commit();
-        state.surface.set_xdg_window(window);
-        if !state.activate_xdg_window_with_startup_token_if_present() {
-            state.request_xdg_activation(qh);
-        }
-        info!("xdg-shell window created");
-    } else {
-        return Err(anyhow::anyhow!(
-            "No supported Wayland shell protocol available"
-        ));
-    }
+    state.surface.set_layer_surface(layer_surface);
+    state.set_current_keyboard_interactivity(Some(desired_keyboard_mode));
+    info!("Layer shell surface created");
 
     Ok(())
 }

@@ -11,7 +11,7 @@ use crate::{
 const OUTPUT_BADGE_MAX_LEN: usize = 28;
 
 impl WaylandState {
-    pub(in crate::backend::wayland) fn preferred_fullscreen_output(
+    pub(in crate::backend::wayland) fn preferred_output(
         &self,
     ) -> Option<wl_output::WlOutput> {
         if let Some(preferred) = self.preferred_output_identity()
@@ -206,7 +206,7 @@ impl WaylandState {
         let surface_current_output = self.surface.current_output();
         let current_output = surface_current_output
             .clone()
-            .or_else(|| self.preferred_fullscreen_output());
+            .or_else(|| self.preferred_output());
         let current_index = current_output
             .as_ref()
             .and_then(|current| outputs.iter().position(|output| output == current))
@@ -228,30 +228,6 @@ impl WaylandState {
 
         if self.has_seen_surface_enter() {
             self.persist_session_for_output(surface_current_output.as_ref(), "output switch");
-        }
-
-        if self.surface.is_xdg_window() {
-            if !self.xdg_fullscreen() {
-                self.input_state.set_ui_toast(
-                    UiToastKind::Info,
-                    "Enable ui.xdg_fullscreen to switch outputs on xdg fallback",
-                );
-                self.input_state.trigger_blocked_feedback();
-                return;
-            }
-            let Some(window) = self.surface.xdg_window().cloned() else {
-                warn!("Output switch requested in xdg mode, but no xdg window is active");
-                return;
-            };
-            info!("Switching xdg overlay to {}", target_label);
-            window.set_fullscreen(Some(&target_output));
-            window.commit();
-            self.surface.set_current_output(target_output);
-            self.set_has_seen_surface_enter(false);
-            self.refresh_active_output_label();
-            self.request_xdg_activation(qh);
-            self.input_state.needs_redraw = true;
-            return;
         }
 
         if self.layer_shell.is_none() {

@@ -13,6 +13,7 @@ use smithay_client_toolkit::{
 use wayland_client::protocol::{wl_output, wl_surface};
 
 /// The active shell role for the surface.
+#[allow(dead_code)] // `Xdg` will be constructed by the upcoming windowed mode
 pub enum SurfaceKind {
     Layer(LayerSurface),
     Xdg {
@@ -70,6 +71,7 @@ impl SurfaceState {
     }
 
     /// Assigns an xdg-shell window produced during startup.
+    #[allow(dead_code)] // Used by upcoming windowed mode
     pub fn set_xdg_window(&mut self, window: Window) {
         self.wl_surface = Some(window.wl_surface().clone());
         self.kind = Some(SurfaceKind::Xdg { window });
@@ -95,6 +97,7 @@ impl SurfaceState {
     }
 
     /// Returns the xdg-shell window, if initialized.
+    #[allow(dead_code)] // Used by upcoming windowed mode
     pub fn xdg_window(&self) -> Option<&Window> {
         match &self.kind {
             Some(SurfaceKind::Xdg { window }) => Some(window),

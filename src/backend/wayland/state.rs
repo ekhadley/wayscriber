@@ -122,7 +122,6 @@ pub(in crate::backend::wayland) struct WaylandStateInit {
     pub exit_after_capture_mode: ExitAfterCaptureMode,
     pub frozen_enabled: bool,
     pub preferred_output_identity: Option<String>,
-    pub xdg_fullscreen: bool,
     pub main_surface_uses_overlay_layer: bool,
     pub pending_freeze_on_start: bool,
     pub screencopy_manager: Option<ScreencopyManager>,
@@ -136,6 +135,7 @@ pub(super) struct WaylandState {
     pub(super) registry_state: RegistryState,
     pub(super) compositor_state: CompositorState,
     pub(super) layer_shell: Option<LayerShell>,
+    #[allow(dead_code)] // Used by upcoming windowed mode (xdg-toplevel surfaces)
     pub(super) xdg_shell: Option<XdgShell>,
     pub(super) activation: Option<ActivationState>,
     pub(super) shm: Shm,

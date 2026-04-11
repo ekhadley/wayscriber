@@ -75,7 +75,6 @@ pub struct StateData {
     pub(super) frozen_enabled: bool,
     pub(super) has_seen_surface_enter: bool,
     pub(super) preferred_output_identity: Option<String>,
-    pub(super) xdg_fullscreen: bool,
     pub(super) main_surface_uses_overlay_layer: bool,
     pub(super) overlay_suppression: OverlaySuppression,
     /// True when surface is configured and has keyboard focus; keys are blocked until ready.
@@ -139,7 +138,6 @@ impl StateData {
             frozen_enabled: false,
             has_seen_surface_enter: false,
             preferred_output_identity: None,
-            xdg_fullscreen: false,
             main_surface_uses_overlay_layer: false,
             overlay_suppression: OverlaySuppression::None,
             overlay_ready: false,

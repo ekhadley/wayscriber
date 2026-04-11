@@ -158,6 +158,7 @@ impl WaylandState {
         self.data.pending_activation_token = token;
     }
 
+    #[allow(dead_code)] // Used by upcoming windowed mode
     pub(in crate::backend::wayland) fn take_startup_activation_token(&mut self) -> Option<String> {
         self.data.startup_activation_token.take()
     }
@@ -174,10 +175,6 @@ impl WaylandState {
         self.data.preferred_output_identity = value;
     }
 
-    pub(in crate::backend::wayland) fn xdg_fullscreen(&self) -> bool {
-        self.data.xdg_fullscreen
-    }
-
     pub(in crate::backend::wayland) fn main_surface_layer(&self) -> Layer {
         if self.data.main_surface_uses_overlay_layer {
             Layer::Overlay
@@ -191,11 +188,6 @@ impl WaylandState {
             self.config.ui.xdg_focus_loss_behavior,
             crate::config::XdgFocusLossBehavior::Exit
         )
-    }
-
-    #[allow(dead_code)]
-    pub(in crate::backend::wayland) fn set_xdg_fullscreen(&mut self, value: bool) {
-        self.data.xdg_fullscreen = value;
     }
 
     pub(in crate::backend::wayland) fn session_options(&self) -> Option<&SessionOptions> {

@@ -52,12 +52,6 @@ impl ConfiguratorApp {
                 .size(12)
                 .style(theme::Text::Color(iced::Color::from_rgb(0.6, 0.6, 0.6))),
             toggle_row(
-                "Use fullscreen xdg fallback",
-                self.draft.ui_xdg_fullscreen,
-                self.defaults.ui_xdg_fullscreen,
-                ToggleField::UiXdgFullscreen,
-            ),
-            toggle_row(
                 "Keep open on xdg focus loss",
                 self.draft.ui_xdg_keep_on_focus_loss,
                 self.defaults.ui_xdg_keep_on_focus_loss,

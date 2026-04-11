@@ -1,5 +1,4 @@
-// Handles xdg-shell window configure/close events for the fallback path when
-// layer-shell is unavailable (e.g., GNOME).
+// Handles xdg-shell window configure/close events.
 use log::{debug, info, warn};
 use smithay_client_toolkit::shell::xdg::window::{Window, WindowConfigure, WindowHandler};
 use std::time::Instant;
@@ -30,7 +29,7 @@ impl WindowHandler for WaylandState {
         &mut self,
         _conn: &Connection,
         qh: &QueueHandle<Self>,
-        window: &Window,
+        _window: &Window,
         configure: WindowConfigure,
         _serial: u32,
     ) {
@@ -67,19 +66,6 @@ impl WindowHandler for WaylandState {
             .1
             .map(|h| h.get())
             .unwrap_or(fallback_dimensions.1);
-
-        if self.xdg_fullscreen() {
-            if let Some(output) = self.preferred_fullscreen_output() {
-                // Reassert fullscreen on the preferred output every configure in case
-                // the compositor picked a different monitor initially.
-                window.set_fullscreen(Some(&output));
-            } else if !configure.is_fullscreen() {
-                window.set_fullscreen(None);
-            }
-        } else {
-            // Keep the window maximized; some compositors may unmaximize on mode switches.
-            window.set_maximized();
-        }
 
         if self.surface.current_output().is_none()
             && let Some(output) = self.output_state.outputs().next()
