@@ -84,13 +84,13 @@ impl InputState {
     }
 
     /// Updates the layout for the color picker popup.
-    pub fn update_color_picker_popup_layout(&mut self, screen_width: u32, screen_height: u32) {
+    pub fn update_color_picker_popup_layout(&mut self, surface_width: u32, surface_height: u32) {
         if !self.is_color_picker_popup_open() {
             self.color_picker_popup_layout = None;
             return;
         }
         self.color_picker_popup_layout =
-            Some(ColorPickerPopupLayout::compute(screen_width, screen_height));
+            Some(ColorPickerPopupLayout::compute(surface_width, surface_height));
     }
 
     /// Clears the cached color picker popup layout.

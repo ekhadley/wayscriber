@@ -35,8 +35,8 @@ const COMMAND_PALETTE_SHORTCUT_MIN_DESC_WIDTH: f64 = 48.0;
 pub fn render_command_palette(
     ctx: &cairo::Context,
     input_state: &InputState,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     if !input_state.command_palette_open {
         return;
@@ -44,7 +44,7 @@ pub fn render_command_palette(
 
     let filtered = input_state.filtered_commands();
     let geometry =
-        input_state.command_palette_geometry(screen_width, screen_height, filtered.len());
+        input_state.command_palette_geometry(surface_width, surface_height, filtered.len());
     let palette_width = geometry.width;
     let height = geometry.height;
 
@@ -53,8 +53,8 @@ pub fn render_command_palette(
 
     draw_command_palette_frame(
         ctx,
-        screen_width as f64,
-        screen_height as f64,
+        surface_width as f64,
+        surface_height as f64,
         x,
         y,
         palette_width,
@@ -112,15 +112,15 @@ fn command_palette_text_style(
 
 fn draw_command_palette_frame(
     ctx: &cairo::Context,
-    screen_width: f64,
-    screen_height: f64,
+    surface_width: f64,
+    surface_height: f64,
     x: f64,
     y: f64,
     palette_width: f64,
     height: f64,
 ) {
     ctx.set_source_rgba(0.0, 0.0, 0.0, OVERLAY_DIM_MEDIUM);
-    ctx.rectangle(0.0, 0.0, screen_width, screen_height);
+    ctx.rectangle(0.0, 0.0, surface_width, surface_height);
     let _ = ctx.fill();
 
     constants::set_color(ctx, SHADOW);

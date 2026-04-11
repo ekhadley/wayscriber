@@ -19,8 +19,8 @@ impl InputState {
     pub fn update_properties_panel_layout(
         &mut self,
         ctx: &CairoContext,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) {
         if self.properties_panel_needs_refresh {
             self.refresh_properties_panel();
@@ -83,8 +83,8 @@ impl InputState {
         let panel_height =
             (PANEL_PADDING_Y * 2.0 + title_height + info_height + entries_height).ceil();
 
-        let screen_w = screen_width as f64;
-        let screen_h = screen_height as f64;
+        let screen_w = surface_width as f64;
+        let screen_h = surface_height as f64;
 
         let (mut origin_x, mut origin_y) = if screen_w > 0.0 && screen_h > 0.0 {
             if let Some(bounds) = panel.anchor_rect {

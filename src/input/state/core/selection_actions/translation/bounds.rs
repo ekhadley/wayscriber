@@ -87,18 +87,18 @@ impl InputState {
 
     pub(super) fn clamp_selection_translation(&self, dx: i32, dy: i32) -> Option<(i32, i32)> {
         let bounds = self.movable_selection_bounds()?;
-        let screen_width = self.screen_width.min(i32::MAX as u32) as i32;
-        let screen_height = self.screen_height.min(i32::MAX as u32) as i32;
+        let surface_width = self.surface_width.min(i32::MAX as u32) as i32;
+        let surface_height = self.surface_height.min(i32::MAX as u32) as i32;
 
         let clamped_dx = if dx == 0 {
             0
         } else {
-            Self::clamp_axis_delta(bounds.x, bounds.width, screen_width, dx)
+            Self::clamp_axis_delta(bounds.x, bounds.width, surface_width, dx)
         };
         let clamped_dy = if dy == 0 {
             0
         } else {
-            Self::clamp_axis_delta(bounds.y, bounds.height, screen_height, dy)
+            Self::clamp_axis_delta(bounds.y, bounds.height, surface_height, dy)
         };
 
         Some((clamped_dx, clamped_dy))

@@ -27,8 +27,8 @@ pub fn render_status_bar(
     input_state: &InputState,
     position: StatusPosition,
     style: &crate::config::StatusBarStyle,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     let color = &input_state.current_color;
     let tool = input_state.active_tool();
@@ -136,7 +136,7 @@ pub fn render_status_bar(
     log::debug!("Status bar font_size from config: {}", style.font_size);
 
     // Limit status bar to 80% of screen width to prevent overflow
-    let max_width = (screen_width as f64 * 0.8) - style.padding * 2.0;
+    let max_width = (surface_width as f64 * 0.8) - style.padding * 2.0;
 
     let layout = text_layout(
         ctx,
@@ -157,13 +157,13 @@ pub fn render_status_bar(
     let (x, y) = match position {
         StatusPosition::TopLeft => (padding, padding + text_height),
         StatusPosition::TopRight => (
-            screen_width as f64 - text_width - padding,
+            surface_width as f64 - text_width - padding,
             padding + text_height,
         ),
-        StatusPosition::BottomLeft => (padding, screen_height as f64 - padding),
+        StatusPosition::BottomLeft => (padding, surface_height as f64 - padding),
         StatusPosition::BottomRight => (
-            screen_width as f64 - text_width - padding,
-            screen_height as f64 - padding,
+            surface_width as f64 - text_width - padding,
+            surface_height as f64 - padding,
         ),
     };
 

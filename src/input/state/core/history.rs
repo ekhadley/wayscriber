@@ -112,7 +112,7 @@ mod tests {
             5,
             PresenterModeConfig::default(),
         );
-        state.update_screen_dimensions(200, 120);
+        state.update_surface_dimensions(200, 120);
         let _ = state.take_dirty_regions();
         state
     }

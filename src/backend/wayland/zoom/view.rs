@@ -11,8 +11,8 @@ impl ZoomState {
         factor: f64,
         screen_x: f64,
         screen_y: f64,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) -> bool {
         let old_scale = self.scale;
         let mut new_scale = old_scale * factor;
@@ -24,7 +24,7 @@ impl ZoomState {
         self.scale = new_scale;
         self.view_offset.0 = world_x - (screen_x / new_scale);
         self.view_offset.1 = world_y - (screen_y / new_scale);
-        self.clamp_offsets(screen_width, screen_height);
+        self.clamp_offsets(surface_width, surface_height);
         true
     }
 
@@ -35,9 +35,9 @@ impl ZoomState {
         )
     }
 
-    pub fn clamp_offsets(&mut self, screen_width: u32, screen_height: u32) {
-        let width = screen_width as f64;
-        let height = screen_height as f64;
+    pub fn clamp_offsets(&mut self, surface_width: u32, surface_height: u32) {
+        let width = surface_width as f64;
+        let height = surface_height as f64;
         let visible_w = width / self.scale.max(MIN_ZOOM_SCALE);
         let visible_h = height / self.scale.max(MIN_ZOOM_SCALE);
         let max_x = (width - visible_w).max(0.0);
@@ -55,13 +55,13 @@ impl ZoomState {
         self.panning = false;
     }
 
-    pub fn pan_by_screen_delta(&mut self, dx: f64, dy: f64, screen_width: u32, screen_height: u32) {
+    pub fn pan_by_screen_delta(&mut self, dx: f64, dy: f64, surface_width: u32, surface_height: u32) {
         if self.scale <= MIN_ZOOM_SCALE {
             return;
         }
         self.view_offset.0 -= dx / self.scale;
         self.view_offset.1 -= dy / self.scale;
-        self.clamp_offsets(screen_width, screen_height);
+        self.clamp_offsets(surface_width, surface_height);
     }
 
     pub fn update_pan_position(&mut self, screen_x: f64, screen_y: f64) -> (f64, f64) {

@@ -97,15 +97,15 @@ impl InputState {
         let Some(bounds) = self.movable_selection_bounds() else {
             return false;
         };
-        let screen_width = self.screen_width.min(i32::MAX as u32) as i32;
-        if screen_width <= 0 {
+        let surface_width = self.surface_width.min(i32::MAX as u32) as i32;
+        if surface_width <= 0 {
             return false;
         }
 
         let target_x = if to_start {
             0
         } else {
-            screen_width - bounds.width
+            surface_width - bounds.width
         };
         let dx = target_x - bounds.x;
         if dx == 0 {
@@ -118,15 +118,15 @@ impl InputState {
         let Some(bounds) = self.movable_selection_bounds() else {
             return false;
         };
-        let screen_height = self.screen_height.min(i32::MAX as u32) as i32;
-        if screen_height <= 0 {
+        let surface_height = self.surface_height.min(i32::MAX as u32) as i32;
+        if surface_height <= 0 {
             return false;
         }
 
         let target_y = if to_start {
             0
         } else {
-            screen_height - bounds.height
+            surface_height - bounds.height
         };
         let dy = target_y - bounds.y;
         if dy == 0 {

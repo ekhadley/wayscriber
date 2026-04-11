@@ -347,7 +347,7 @@ mod tests {
         state.toggle_command_palette();
         assert!(state.filtered_commands().len() > COMMAND_PALETTE_MAX_VISIBLE);
 
-        // screen_height=1000 -> panel y=200; clamped panel height=420 => bottom=620.
+        // surface_height=1000 -> panel y=200; clamped panel height=420 => bottom=620.
         // y=623 is below the rendered panel and must be treated as outside.
         let hint = state.command_palette_cursor_hint_at(960, 623, 1920, 1000);
         assert!(hint.is_none());

@@ -27,7 +27,7 @@ impl WaylandState {
                 kind, event.position.0, event.position.1, on_toolbar
             );
             // On toolbar surface: coords are toolbar-local, need conversion
-            // On main surface: coords are already screen-relative (fullscreen overlay)
+            // On main surface: coords are surface-local
             if on_toolbar {
                 self.handle_toolbar_move(kind, event.position);
             } else {

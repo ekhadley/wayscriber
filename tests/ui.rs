@@ -63,7 +63,7 @@ fn surface_has_pixels(surface: &mut ImageSurface) -> bool {
 #[test]
 fn render_status_bar_draws_for_all_positions() {
     let mut input = make_input_state();
-    input.update_screen_dimensions(800, 480);
+    input.update_surface_dimensions(800, 480);
     let style = StatusBarStyle::default();
     let positions = [
         StatusPosition::TopLeft,
@@ -99,7 +99,7 @@ fn render_help_overlay_draws_content() {
 #[test]
 fn render_status_bar_draws_in_board_modes() {
     let mut input = make_input_state();
-    input.update_screen_dimensions(800, 480);
+    input.update_surface_dimensions(800, 480);
     let style = StatusBarStyle::default();
 
     let board_ids = [BOARD_ID_WHITEBOARD, BOARD_ID_BLACKBOARD];

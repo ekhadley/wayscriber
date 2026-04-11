@@ -131,14 +131,14 @@ pub(crate) fn measure_sections(
 
 pub(crate) fn build_grid(
     measured_sections: Vec<MeasuredSection>,
-    screen_width: u32,
+    surface_width: u32,
     max_content_width: f64,
     column_gap: f64,
     row_gap: f64,
 ) -> GridLayout {
-    let max_columns = if screen_width < 1200 {
+    let max_columns = if surface_width < 1200 {
         1
-    } else if screen_width > 1920 {
+    } else if surface_width > 1920 {
         3
     } else {
         2

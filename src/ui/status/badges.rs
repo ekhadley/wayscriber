@@ -2,7 +2,7 @@ use super::super::primitives::draw_rounded_rect;
 use crate::ui_text::{UiTextStyle, text_layout};
 
 /// Render a small badge indicating frozen mode (visible even when status bar is hidden).
-pub fn render_frozen_badge(ctx: &cairo::Context, screen_width: u32, _screen_height: u32) {
+pub fn render_frozen_badge(ctx: &cairo::Context, surface_width: u32, _surface_height: u32) {
     let label = "FROZEN";
     let padding = 12.0;
     let radius = 8.0;
@@ -23,7 +23,7 @@ pub fn render_frozen_badge(ctx: &cairo::Context, screen_width: u32, _screen_heig
     let width = extents.width() + padding * 1.4;
     let height = extents.height() + padding;
 
-    let x = screen_width as f64 - width - padding;
+    let x = surface_width as f64 - width - padding;
     let y = padding + height;
 
     // Background with warning tint
@@ -39,8 +39,8 @@ pub fn render_frozen_badge(ctx: &cairo::Context, screen_width: u32, _screen_heig
 /// Render a small badge indicating zoom mode (visible even when status bar is hidden).
 pub fn render_zoom_badge(
     ctx: &cairo::Context,
-    screen_width: u32,
-    _screen_height: u32,
+    surface_width: u32,
+    _surface_height: u32,
     zoom_scale: f64,
     locked: bool,
 ) {
@@ -69,7 +69,7 @@ pub fn render_zoom_badge(
     let width = extents.width() + padding * 1.4;
     let height = extents.height() + padding;
 
-    let x = screen_width as f64 - width - padding;
+    let x = surface_width as f64 - width - padding;
     let y = padding + height;
 
     // Background with teal tint
@@ -85,8 +85,8 @@ pub fn render_zoom_badge(
 /// Render a small badge indicating text edit mode is active.
 pub fn render_editing_badge(
     ctx: &cairo::Context,
-    screen_width: u32,
-    _screen_height: u32,
+    surface_width: u32,
+    _surface_height: u32,
     offset_y: f64,
 ) {
     let label = "EDITING";
@@ -128,7 +128,7 @@ pub fn render_editing_badge(
     let width = content_width + padding * 1.6;
     let height = label_extents.height() + hint_extents.height() + padding * 1.2;
 
-    let x = screen_width as f64 - width - padding;
+    let x = surface_width as f64 - width - padding;
     let y = padding + offset_y;
 
     // Background with teal accent
@@ -157,8 +157,8 @@ pub fn render_editing_badge(
 #[allow(clippy::too_many_arguments)]
 pub fn render_page_badge(
     ctx: &cairo::Context,
-    _screen_width: u32,
-    _screen_height: u32,
+    _surface_width: u32,
+    _surface_height: u32,
     board_index: usize,
     board_count: usize,
     board_name: &str,

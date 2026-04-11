@@ -23,8 +23,8 @@ const PRESET_TOAST_Y_RATIO: f64 = 0.2;
 pub fn render_preset_toast(
     ctx: &cairo::Context,
     input_state: &InputState,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     if !input_state.show_preset_toasts {
         return;
@@ -76,8 +76,8 @@ pub fn render_preset_toast(
     let extents = layout.ink_extents();
     let width = extents.width() + padding_x * 2.0;
     let height = extents.height() + padding_y * 2.0;
-    let x = (screen_width as f64 - width) / 2.0;
-    let center_y = screen_height as f64 * PRESET_TOAST_Y_RATIO;
+    let x = (surface_width as f64 - width) / 2.0;
+    let center_y = surface_height as f64 * PRESET_TOAST_Y_RATIO;
     let y = center_y - height / 2.0;
 
     let fade = if (progress as f64) <= UI_TOAST_HOLD_RATIO {
@@ -107,8 +107,8 @@ pub fn render_preset_toast(
 pub fn render_ui_toast(
     ctx: &cairo::Context,
     input_state: &InputState,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) -> Option<(f64, f64, f64, f64)> {
     let toast = input_state.ui_toast.as_ref()?;
 
@@ -144,8 +144,8 @@ pub fn render_ui_toast(
     let full_extents = full_layout.ink_extents();
     let width = full_extents.width() + padding_x * 2.0;
     let height = full_extents.height() + padding_y * 2.0;
-    let x = (screen_width as f64 - width) / 2.0;
-    let center_y = screen_height as f64 * UI_TOAST_Y_RATIO;
+    let x = (surface_width as f64 - width) / 2.0;
+    let center_y = surface_height as f64 * UI_TOAST_Y_RATIO;
     let y = center_y - height / 2.0;
 
     let fade = (1.0 - progress as f64).clamp(0.0, 1.0);
@@ -233,8 +233,8 @@ pub fn render_ui_toast(
 pub fn render_blocked_feedback(
     ctx: &cairo::Context,
     input_state: &InputState,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     let Some(progress) = input_state.blocked_feedback_progress() else {
         return;
@@ -252,8 +252,8 @@ pub fn render_blocked_feedback(
         0.22 * (1.0 - (progress - 0.4) / 0.6)
     };
 
-    let w = screen_width as f64;
-    let h = screen_height as f64;
+    let w = surface_width as f64;
+    let h = surface_height as f64;
     let b = BLOCKED_FEEDBACK_BORDER;
 
     // Red tint on all four screen edges

@@ -119,15 +119,15 @@ impl InputState {
         &mut self,
         x: i32,
         y: i32,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) -> bool {
         if !self.command_palette_open {
             return false;
         }
 
         let filtered = self.filtered_commands();
-        let geometry = self.command_palette_geometry(screen_width, screen_height, filtered.len());
+        let geometry = self.command_palette_geometry(surface_width, surface_height, filtered.len());
         let (local_x, local_y) = geometry.local_point(x, y);
 
         // Check if click is outside palette bounds - close it.
@@ -178,15 +178,15 @@ impl InputState {
         &self,
         x: i32,
         y: i32,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) -> Option<CommandPaletteCursorHint> {
         if !self.command_palette_open {
             return None;
         }
 
         let filtered = self.filtered_commands();
-        let geometry = self.command_palette_geometry(screen_width, screen_height, filtered.len());
+        let geometry = self.command_palette_geometry(surface_width, surface_height, filtered.len());
         command_palette_cursor_hint_from_local(geometry, x, y)
     }
 }

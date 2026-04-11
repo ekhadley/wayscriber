@@ -92,7 +92,7 @@ pub(crate) fn command_palette_height(visible_count: usize) -> f64 {
 }
 
 impl InputState {
-    pub fn command_palette_width(&self, screen_width: u32) -> f64 {
+    pub fn command_palette_width(&self, surface_width: u32) -> f64 {
         let commands = self.filtered_commands();
         let mut required_inner_width: f64 = 0.0;
 
@@ -130,7 +130,7 @@ impl InputState {
 
         let requested_width = required_inner_width + COMMAND_PALETTE_PADDING * 2.0;
         let max_available =
-            (screen_width as f64 - COMMAND_PALETTE_HORIZONTAL_MARGIN * 2.0).max(240.0);
+            (surface_width as f64 - COMMAND_PALETTE_HORIZONTAL_MARGIN * 2.0).max(240.0);
         requested_width.clamp(
             COMMAND_PALETTE_MIN_WIDTH.min(max_available),
             COMMAND_PALETTE_MAX_WIDTH.min(max_available),
@@ -139,13 +139,13 @@ impl InputState {
 
     pub(crate) fn command_palette_geometry(
         &self,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
         total_items: usize,
     ) -> CommandPaletteGeometry {
-        let width = self.command_palette_width(screen_width);
-        let x = (screen_width as f64 - width) / 2.0;
-        let y = screen_height as f64 * COMMAND_PALETTE_TOP_RATIO;
+        let width = self.command_palette_width(surface_width);
+        let x = (surface_width as f64 - width) / 2.0;
+        let y = surface_height as f64 * COMMAND_PALETTE_TOP_RATIO;
         let visible_count = command_palette_visible_count(total_items);
 
         let input_top = COMMAND_PALETTE_PADDING;

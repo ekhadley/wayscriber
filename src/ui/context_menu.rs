@@ -11,8 +11,8 @@ use super::constants::{
 pub fn render_context_menu(
     ctx: &cairo::Context,
     input_state: &InputState,
-    _screen_width: u32,
-    _screen_height: u32,
+    _surface_width: u32,
+    _surface_height: u32,
 ) {
     let (hover_index, focus_index) = match &input_state.context_menu_state {
         ContextMenuState::Open {

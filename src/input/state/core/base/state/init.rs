@@ -21,8 +21,8 @@ use std::collections::HashMap;
 impl InputState {
     /// Creates a new InputState with specified defaults.
     ///
-    /// Screen dimensions default to 0 and should be updated by the backend
-    /// after surface configuration (see `update_screen_dimensions`).
+    /// Surface dimensions default to 0 and should be updated by the backend
+    /// after surface configuration (see `update_surface_dimensions`).
     ///
     /// # Arguments
     /// * `color` - Initial drawing color
@@ -130,8 +130,8 @@ impl InputState {
             toolbar_shapes_expanded: false,
             toolbar_drawer_open: false,
             toolbar_drawer_tab: ToolbarDrawerTab::View,
-            screen_width: 0,
-            screen_height: 0,
+            surface_width: 0,
+            surface_height: 0,
             show_active_output_badge: false,
             active_output_label: None,
             board_previous_color: None,

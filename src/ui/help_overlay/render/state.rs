@@ -32,8 +32,8 @@ pub(super) struct OverlayLayout {
 pub(super) fn build_overlay_layout(
     ctx: &cairo::Context,
     style: &crate::config::HelpOverlayStyle,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
     frozen_enabled: bool,
     page_index: usize,
     bindings: &HelpOverlayBindings,
@@ -78,10 +78,10 @@ pub(super) fn build_overlay_layout(
         section_sets.page2
     };
 
-    let metrics = RenderMetrics::from_style(style, screen_width, screen_height);
+    let metrics = RenderMetrics::from_style(style, surface_width, surface_height);
     let palette = RenderPalette::from_style(style);
 
-    let max_search_width = (screen_width as f64 * 0.9 - metrics.padding * 2.0).max(0.0);
+    let max_search_width = (surface_width as f64 * 0.9 - metrics.padding * 2.0).max(0.0);
     let nav_state = build_nav_state(
         ctx,
         help_font_family.as_str(),
@@ -123,7 +123,7 @@ pub(super) fn build_overlay_layout(
     let max_content_width = (metrics.max_box_width - metrics.padding * 2.0).max(0.0);
     let grid = build_grid(
         measured_sections,
-        screen_width,
+        surface_width,
         max_content_width,
         metrics.column_gap,
         metrics.row_gap,
@@ -211,8 +211,8 @@ pub(super) fn build_overlay_layout(
     let box_width = content_width + metrics.padding * 2.0;
     let box_height = inner_height + metrics.padding * 2.0;
 
-    let box_x = (screen_width as f64 - box_width) / 2.0;
-    let box_y = (screen_height as f64 - box_height) / 2.0;
+    let box_x = (surface_width as f64 - box_width) / 2.0;
+    let box_y = (surface_height as f64 - box_height) / 2.0;
 
     OverlayLayout {
         search_active,

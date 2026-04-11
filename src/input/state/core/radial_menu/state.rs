@@ -255,8 +255,8 @@ impl InputState {
             self.text_edit_target = None;
             self.text_wrap_width = None;
             self.state = DrawingState::TextInput {
-                x: (self.screen_width / 2) as i32,
-                y: (self.screen_height / 2) as i32,
+                x: (self.surface_width / 2) as i32,
+                y: (self.surface_height / 2) as i32,
                 buffer: String::new(),
             };
             self.last_text_preview_bounds = None;
@@ -271,8 +271,8 @@ impl InputState {
             self.text_edit_target = None;
             self.text_wrap_width = None;
             self.state = DrawingState::TextInput {
-                x: (self.screen_width / 2) as i32,
-                y: (self.screen_height / 2) as i32,
+                x: (self.surface_width / 2) as i32,
+                y: (self.surface_height / 2) as i32,
                 buffer: String::new(),
             };
             self.last_text_preview_bounds = None;

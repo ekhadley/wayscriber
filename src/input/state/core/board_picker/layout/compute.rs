@@ -126,8 +126,8 @@ impl InputState {
     pub(crate) fn update_board_picker_layout(
         &mut self,
         ctx: &CairoContext,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) {
         if !self.is_board_picker_open() {
             self.board_picker_layout = None;
@@ -162,14 +162,14 @@ impl InputState {
         let panel_height =
             self.derive_board_picker_panel_height(&config, row_count, &content, &palette);
         let (page_panel, panel_height) = self.compute_board_picker_page_panel_metrics(
-            screen_width,
-            screen_height,
+            surface_width,
+            surface_height,
             content.footer_height,
             panel_height,
         );
         let geometry = self.compute_board_picker_layout_geometry(
-            screen_width,
-            screen_height,
+            surface_width,
+            surface_height,
             content.list_width,
             panel_height,
             &page_panel,

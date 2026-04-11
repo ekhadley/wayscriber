@@ -9,8 +9,8 @@ pub(super) fn draw_overlay_frame(
     ctx: &cairo::Context,
     style: &HelpOverlayStyle,
     palette: &RenderPalette,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
     box_x: f64,
     box_y: f64,
     box_width: f64,
@@ -20,7 +20,7 @@ pub(super) fn draw_overlay_frame(
 
     // Dim background behind overlay
     ctx.set_source_rgba(0.0, 0.0, 0.0, OVERLAY_DIM_HELP);
-    ctx.rectangle(0.0, 0.0, screen_width as f64, screen_height as f64);
+    ctx.rectangle(0.0, 0.0, surface_width as f64, surface_height as f64);
     let _ = ctx.fill();
 
     // Drop shadow (layered for softer effect)

@@ -169,10 +169,10 @@ pub struct InputState {
     pub toolbar_drawer_open: bool,
     /// Active toolbar drawer tab
     pub toolbar_drawer_tab: ToolbarDrawerTab,
-    /// Screen width in pixels (set by backend after configuration)
-    pub screen_width: u32,
-    /// Screen height in pixels (set by backend after configuration)
-    pub screen_height: u32,
+    /// Surface width in pixels (set by backend after configuration)
+    pub surface_width: u32,
+    /// Surface height in pixels (set by backend after configuration)
+    pub surface_height: u32,
     /// Whether to show active output badge in status bar.
     pub show_active_output_badge: bool,
     /// Active output label shown in status bar when configured.

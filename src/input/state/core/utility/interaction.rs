@@ -33,9 +33,9 @@ impl InputState {
     ///
     /// This should be called by the backend when it receives the actual
     /// screen dimensions from the display server.
-    pub fn update_screen_dimensions(&mut self, width: u32, height: u32) {
-        self.screen_width = width;
-        self.screen_height = height;
+    pub fn update_surface_dimensions(&mut self, width: u32, height: u32) {
+        self.surface_width = width;
+        self.surface_height = height;
     }
 
     /// Cancels the current text input session and restores any edited shape.
@@ -91,8 +91,8 @@ impl InputState {
     /// Drains pending dirty rectangles for the current surface size.
     #[allow(dead_code)]
     pub fn take_dirty_regions(&mut self) -> Vec<Rect> {
-        let width = self.screen_width.min(i32::MAX as u32) as i32;
-        let height = self.screen_height.min(i32::MAX as u32) as i32;
+        let width = self.surface_width.min(i32::MAX as u32) as i32;
+        let height = self.surface_height.min(i32::MAX as u32) as i32;
         self.dirty_tracker.take_regions(width, height)
     }
 }
@@ -144,7 +144,7 @@ mod tests {
     #[test]
     fn take_dirty_regions_returns_full_surface_and_drains_tracker() {
         let mut state = make_test_input_state();
-        state.update_screen_dimensions(100, 50);
+        state.update_surface_dimensions(100, 50);
         state.dirty_tracker.mark_full();
 
         assert_eq!(

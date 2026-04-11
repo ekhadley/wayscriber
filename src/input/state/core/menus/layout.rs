@@ -20,8 +20,8 @@ impl InputState {
     pub fn update_context_menu_layout(
         &mut self,
         ctx: &CairoContext,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) {
         if !self.is_context_menu_open() {
             self.context_menu_layout = None;
@@ -78,8 +78,8 @@ impl InputState {
             ContextMenuState::Hidden => 0.0,
         };
 
-        let screen_w = screen_width as f64;
-        let screen_h = screen_height as f64;
+        let screen_w = surface_width as f64;
+        let screen_h = surface_height as f64;
         if origin_x + menu_width > screen_w - 6.0 {
             origin_x = (screen_w - menu_width - 6.0).max(6.0);
         }

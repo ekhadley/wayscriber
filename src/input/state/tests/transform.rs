@@ -46,7 +46,7 @@ fn translate_selection_with_undo_moves_shape() {
 #[test]
 fn move_selection_to_horizontal_edges_uses_screen_bounds() {
     let mut state = create_test_input_state();
-    state.update_screen_dimensions(200, 100);
+    state.update_surface_dimensions(200, 100);
     let shape_id = state.boards.active_frame_mut().add_shape(Shape::Rect {
         x: 50,
         y: 20,
@@ -80,7 +80,7 @@ fn move_selection_to_horizontal_edges_uses_screen_bounds() {
 #[test]
 fn move_selection_to_horizontal_edges_ignores_last_axis() {
     let mut state = create_test_input_state();
-    state.update_screen_dimensions(200, 100);
+    state.update_surface_dimensions(200, 100);
     let shape_id = state.boards.active_frame_mut().add_shape(Shape::Rect {
         x: 50,
         y: 20,
@@ -115,7 +115,7 @@ fn move_selection_to_horizontal_edges_ignores_last_axis() {
 #[test]
 fn move_selection_to_vertical_edges_explicit_actions() {
     let mut state = create_test_input_state();
-    state.update_screen_dimensions(200, 100);
+    state.update_surface_dimensions(200, 100);
     let shape_id = state.boards.active_frame_mut().add_shape(Shape::Rect {
         x: 50,
         y: 20,
@@ -173,7 +173,7 @@ fn nudge_selection_large_uses_large_step() {
 #[test]
 fn nudge_selection_clamps_left_and_top_edges() {
     let mut state = create_test_input_state();
-    state.update_screen_dimensions(100, 100);
+    state.update_surface_dimensions(100, 100);
     let shape_id = state.boards.active_frame_mut().add_shape(Shape::Rect {
         x: 4,
         y: 3,
@@ -197,7 +197,7 @@ fn nudge_selection_clamps_left_and_top_edges() {
 #[test]
 fn nudge_selection_clamps_right_and_bottom_edges() {
     let mut state = create_test_input_state();
-    state.update_screen_dimensions(100, 100);
+    state.update_surface_dimensions(100, 100);
     let shape_id = state.boards.active_frame_mut().add_shape(Shape::Rect {
         x: 90,
         y: 90,

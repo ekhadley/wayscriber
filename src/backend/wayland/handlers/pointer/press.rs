@@ -27,13 +27,13 @@ impl WaylandState {
         // Handle command palette clicks
         if self.input_state.command_palette_open {
             if button == BTN_LEFT {
-                let screen_width = self.surface.width();
-                let screen_height = self.surface.height();
+                let surface_width = self.surface.width();
+                let surface_height = self.surface.height();
                 if self.input_state.handle_command_palette_click(
                     event.position.0 as i32,
                     event.position.1 as i32,
-                    screen_width,
-                    screen_height,
+                    surface_width,
+                    surface_height,
                 ) {
                     self.set_suppress_next_release(true);
                 }

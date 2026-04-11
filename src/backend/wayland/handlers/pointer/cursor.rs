@@ -79,11 +79,11 @@ impl WaylandState {
         // Check command palette
         if self.input_state.command_palette_open {
             let (mx, my) = self.current_mouse();
-            let screen_width = self.surface.width();
-            let screen_height = self.surface.height();
+            let surface_width = self.surface.width();
+            let surface_height = self.surface.height();
             if let Some(hint) =
                 self.input_state
-                    .command_palette_cursor_hint_at(mx, my, screen_width, screen_height)
+                    .command_palette_cursor_hint_at(mx, my, surface_width, surface_height)
             {
                 return match hint {
                     CommandPaletteCursorHint::Text => CursorIcon::Text,
@@ -96,11 +96,11 @@ impl WaylandState {
         // Check help overlay
         if self.input_state.show_help {
             let (mx, my) = self.current_mouse();
-            let screen_width = self.surface.width();
-            let screen_height = self.surface.height();
+            let surface_width = self.surface.width();
+            let surface_height = self.surface.height();
             if let Some(hint) =
                 self.input_state
-                    .help_overlay_cursor_hint_at(mx, my, screen_width, screen_height)
+                    .help_overlay_cursor_hint_at(mx, my, surface_width, surface_height)
             {
                 return match hint {
                     HelpOverlayCursorHint::Text => CursorIcon::Text,

@@ -48,8 +48,8 @@ impl StyleKey {
 #[derive(Clone, PartialEq)]
 struct LayoutCacheKey {
     style: StyleKey,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
     frozen_enabled: bool,
     page_index: usize,
     bindings_key: String,
@@ -77,8 +77,8 @@ thread_local! {
 pub(super) fn get_or_build_overlay_layout(
     ctx: &cairo::Context,
     style: &crate::config::HelpOverlayStyle,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
     frozen_enabled: bool,
     page_index: usize,
     bindings: &HelpOverlayBindings,
@@ -95,8 +95,8 @@ pub(super) fn get_or_build_overlay_layout(
 ) -> OverlayLayout {
     let key = LayoutCacheKey {
         style: StyleKey::from_style(style),
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
         frozen_enabled,
         page_index,
         bindings_key: bindings.cache_key().to_string(),
@@ -122,8 +122,8 @@ pub(super) fn get_or_build_overlay_layout(
         let layout = build_overlay_layout(
             ctx,
             style,
-            screen_width,
-            screen_height,
+            surface_width,
+            surface_height,
             frozen_enabled,
             page_index,
             bindings,

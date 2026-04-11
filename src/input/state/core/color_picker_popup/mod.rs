@@ -102,13 +102,13 @@ pub struct ColorPickerPopupLayout {
 
 impl ColorPickerPopupLayout {
     /// Compute the layout for given screen dimensions.
-    pub fn compute(screen_width: u32, screen_height: u32) -> Self {
+    pub fn compute(surface_width: u32, surface_height: u32) -> Self {
         let width = POPUP_WIDTH;
         let height = POPUP_HEIGHT;
 
         // Center the popup on screen
-        let origin_x = (screen_width as f64 - width) / 2.0;
-        let origin_y = (screen_height as f64 - height) / 2.0;
+        let origin_x = (surface_width as f64 - width) / 2.0;
+        let origin_y = (surface_height as f64 - height) / 2.0;
 
         // Content starts after padding and title
         let content_x = origin_x + PADDING;

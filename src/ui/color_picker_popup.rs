@@ -17,8 +17,8 @@ use super::constants::{
 pub fn render_color_picker_popup(
     ctx: &cairo::Context,
     input_state: &InputState,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     if !input_state.is_color_picker_popup_open() {
         return;
@@ -44,7 +44,7 @@ pub fn render_color_picker_popup(
 
     // Dim background
     ctx.set_source_rgba(0.0, 0.0, 0.0, OVERLAY_DIM_MEDIUM);
-    ctx.rectangle(0.0, 0.0, screen_width as f64, screen_height as f64);
+    ctx.rectangle(0.0, 0.0, surface_width as f64, surface_height as f64);
     let _ = ctx.fill();
 
     // Panel background

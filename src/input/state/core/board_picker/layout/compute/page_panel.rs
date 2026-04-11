@@ -9,8 +9,8 @@ use super::BoardPickerPagePanelMetrics;
 impl InputState {
     pub(super) fn compute_board_picker_page_panel_metrics(
         &self,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
         footer_height: f64,
         mut panel_height: f64,
     ) -> (BoardPickerPagePanelMetrics, f64) {
@@ -32,16 +32,16 @@ impl InputState {
             && let Some(board) = self.boards.board_states().get(board_index)
         {
             metrics.count = board.pages.page_count();
-            let aspect = if screen_height == 0 {
+            let aspect = if surface_height == 0 {
                 1.0
             } else {
-                screen_width as f64 / screen_height as f64
+                surface_width as f64 / surface_height as f64
             };
             let base_thumb_width =
                 (PAGE_THUMB_HEIGHT * aspect).clamp(PAGE_THUMB_MIN_WIDTH, PAGE_THUMB_MAX_WIDTH);
 
             let available_right =
-                (screen_width as f64 - (PAGE_PANEL_GAP + 32.0)).max(base_thumb_width + 32.0);
+                (surface_width as f64 - (PAGE_PANEL_GAP + 32.0)).max(base_thumb_width + 32.0);
             let mut candidate_cols = PAGE_PANEL_MAX_COLS.max(1);
             loop {
                 let candidate_width = PAGE_PANEL_PADDING_X * 2.0

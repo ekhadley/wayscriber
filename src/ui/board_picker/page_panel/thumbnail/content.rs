@@ -15,8 +15,8 @@ pub(super) fn render_page_content(args: PageContentArgs<'_>) {
         y,
         width,
         height,
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
     } = args;
     let radius = 6.0;
     let _ = ctx.save();
@@ -46,9 +46,9 @@ pub(super) fn render_page_content(args: PageContentArgs<'_>) {
     let inset = 2.0;
     let content_w = (width - inset * 2.0).max(1.0);
     let content_h = (height - inset * 2.0).max(1.0);
-    let scale = (content_w / screen_width as f64).min(content_h / screen_height as f64);
-    let offset_x = (content_w - screen_width as f64 * scale) * 0.5;
-    let offset_y = (content_h - screen_height as f64 * scale) * 0.5;
+    let scale = (content_w / surface_width as f64).min(content_h / surface_height as f64);
+    let offset_x = (content_w - surface_width as f64 * scale) * 0.5;
+    let offset_y = (content_h - surface_height as f64 * scale) * 0.5;
 
     let _ = ctx.save();
     ctx.translate(x + inset + offset_x, y + inset + offset_y);

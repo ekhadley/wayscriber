@@ -168,20 +168,20 @@ impl InputState {
         &self,
         x: i32,
         y: i32,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) -> Option<HelpOverlayCursorHint> {
         if !self.show_help {
             return None;
         }
 
         // Calculate approximate overlay bounds (centered, ~80% of screen)
-        let margin_x = screen_width as f64 * 0.1;
-        let margin_y = screen_height as f64 * 0.05;
+        let margin_x = surface_width as f64 * 0.1;
+        let margin_y = surface_height as f64 * 0.05;
         let box_x = margin_x;
         let box_y = margin_y;
-        let box_width = screen_width as f64 - margin_x * 2.0;
-        let box_height = screen_height as f64 - margin_y * 2.0;
+        let box_width = surface_width as f64 - margin_x * 2.0;
+        let box_height = surface_height as f64 - margin_y * 2.0;
 
         let local_x = x as f64 - box_x;
         let local_y = y as f64 - box_y;

@@ -21,8 +21,8 @@ pub(in crate::ui::board_picker::page_panel) fn render_page_thumbnail(args: PageT
         y,
         width,
         height,
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
         page_number,
         page_name,
         is_active,
@@ -53,8 +53,8 @@ pub(in crate::ui::board_picker::page_panel) fn render_page_thumbnail(args: PageT
         y,
         width,
         height,
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
     });
 
     if is_active {
@@ -240,22 +240,22 @@ pub(in crate::ui::board_picker::page_panel) fn render_page_preview(args: PagePre
         thumb_y,
         thumb_w,
         thumb_h,
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
         page_number,
     } = args;
     let base_w = thumb_w * PREVIEW_SCALE;
     let base_h = thumb_h * PREVIEW_SCALE;
     let margin = 8.0;
-    let max_w = (screen_width as f64 - margin * 2.0).max(1.0);
-    let max_h = (screen_height as f64 - margin * 2.0).max(1.0);
+    let max_w = (surface_width as f64 - margin * 2.0).max(1.0);
+    let max_h = (surface_height as f64 - margin * 2.0).max(1.0);
     let scale = (max_w / base_w).min(max_h / base_h).min(1.0);
     let preview_w = base_w * scale;
     let preview_h = base_h * scale;
     let mut preview_x = thumb_x + thumb_w + 12.0;
     let mut preview_y = thumb_y;
-    let max_x = screen_width as f64 - margin - preview_w;
-    let max_y = screen_height as f64 - margin - preview_h;
+    let max_x = surface_width as f64 - margin - preview_w;
+    let max_y = surface_height as f64 - margin - preview_h;
     preview_x = preview_x.clamp(margin, max_x.max(margin));
     preview_y = preview_y.clamp(margin, max_y.max(margin));
 
@@ -285,8 +285,8 @@ pub(in crate::ui::board_picker::page_panel) fn render_page_preview(args: PagePre
         y: preview_y,
         width: preview_w,
         height: preview_h,
-        screen_width,
-        screen_height,
+        surface_width,
+        surface_height,
     });
 
     let label = frame

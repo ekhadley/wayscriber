@@ -18,8 +18,8 @@ pub(super) fn render_page_panel(
     ctx: &cairo::Context,
     input_state: &InputState,
     layout: BoardPickerLayout,
-    screen_width: u32,
-    screen_height: u32,
+    surface_width: u32,
+    surface_height: u32,
 ) {
     if !layout.page_panel_enabled {
         return;
@@ -118,8 +118,8 @@ pub(super) fn render_page_panel(
             y: thumb_y,
             width: layout.page_thumb_width,
             height: layout.page_thumb_height,
-            screen_width,
-            screen_height,
+            surface_width,
+            surface_height,
             page_number: index + 1,
             page_name: page.page_name(),
             is_active,
@@ -149,8 +149,8 @@ pub(super) fn render_page_panel(
             thumb_y,
             thumb_w: layout.page_thumb_width,
             thumb_h: layout.page_thumb_height,
-            screen_width,
-            screen_height,
+            surface_width,
+            surface_height,
             page_number: hover_index + 1,
         });
     }

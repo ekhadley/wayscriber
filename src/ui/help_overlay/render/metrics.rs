@@ -42,8 +42,8 @@ pub(super) struct RenderMetrics {
 impl RenderMetrics {
     pub(super) fn from_style(
         style: &HelpOverlayStyle,
-        screen_width: u32,
-        screen_height: u32,
+        surface_width: u32,
+        surface_height: u32,
     ) -> Self {
         let scale = 0.8;
         let body_font_size = style.font_size * scale;
@@ -79,8 +79,8 @@ impl RenderMetrics {
         let extra_line_gap = 30.0 * scale;
         let extra_line_bottom_spacing = 18.0 * scale;
         let columns_bottom_spacing = 28.0 * scale;
-        let max_box_width = screen_width as f64 * 0.92;
-        let max_box_height = screen_height as f64 * 0.92;
+        let max_box_width = surface_width as f64 * 0.92;
+        let max_box_height = surface_height as f64 * 0.92;
         let note_font_size = (body_font_size - 2.0 * scale).max(min_font_size);
         let nav_font_size = (body_font_size - 1.0 * scale).max(min_font_size);
         let note_to_close_gap = 12.0 * scale;
