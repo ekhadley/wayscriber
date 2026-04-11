@@ -187,4 +187,49 @@ mod tests {
             "expected --freeze-on-show without --daemon to error"
         );
     }
+
+    #[test]
+    fn windowed_parses_alone() {
+        let cli = Cli::try_parse_from(["wayscriber", "--windowed"]).unwrap();
+        assert!(cli.windowed);
+    }
+
+    #[test]
+    fn windowed_short_flag_parses() {
+        let cli = Cli::try_parse_from(["wayscriber", "-w"]).unwrap();
+        assert!(cli.windowed);
+    }
+
+    #[test]
+    fn windowed_accepts_mode_and_active() {
+        let cli = Cli::try_parse_from([
+            "wayscriber",
+            "--windowed",
+            "--active",
+            "--mode",
+            "whiteboard",
+        ])
+        .unwrap();
+        assert!(cli.windowed);
+        assert!(cli.active);
+        assert_eq!(cli.mode.as_deref(), Some("whiteboard"));
+    }
+
+    #[test]
+    fn windowed_conflicts_with_daemon() {
+        let result = Cli::try_parse_from(["wayscriber", "--windowed", "--daemon"]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn windowed_conflicts_with_freeze() {
+        let result = Cli::try_parse_from(["wayscriber", "--windowed", "--freeze"]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn windowed_conflicts_with_exit_after_capture() {
+        let result = Cli::try_parse_from(["wayscriber", "--windowed", "--exit-after-capture"]);
+        assert!(result.is_err());
+    }
 }

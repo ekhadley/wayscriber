@@ -34,3 +34,35 @@ impl PresentationMode {
         self.is_overlay()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::PresentationMode;
+
+    #[test]
+    fn overlay_allows_overlay_only_features() {
+        let mode = PresentationMode::Overlay;
+        assert!(mode.is_overlay());
+        assert!(!mode.is_windowed());
+        assert!(mode.allows_passthrough());
+        assert!(mode.allows_capture());
+        assert!(mode.allows_freeze());
+        assert!(mode.allows_output_switching());
+    }
+
+    #[test]
+    fn windowed_blocks_overlay_only_features() {
+        let mode = PresentationMode::Windowed;
+        assert!(mode.is_windowed());
+        assert!(!mode.is_overlay());
+        assert!(!mode.allows_passthrough());
+        assert!(!mode.allows_capture());
+        assert!(!mode.allows_freeze());
+        assert!(!mode.allows_output_switching());
+    }
+
+    #[test]
+    fn default_is_overlay() {
+        assert_eq!(PresentationMode::default(), PresentationMode::Overlay);
+    }
+}
